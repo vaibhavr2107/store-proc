@@ -1,0 +1,1478 @@
+{
+  "procedure": {
+    "id": "proc::GetCustomerOrderSummary",
+    "name": "GetCustomerOrderSummary",
+    "request_id": "request_001"
+  },
+  "domains": {
+    "customerManagement": {
+      "services": {
+        "CustomermanagementService": {
+          "tables": {
+            "audit_logs": {
+              "fields": [
+                "operation",
+                "record_id",
+                "table_name",
+                "timestamp",
+                "user_id"
+              ]
+            },
+            "customers": {
+              "fields": [
+                "address",
+                "customer_name",
+                "email",
+                "last_access_date",
+                "phone"
+              ]
+            }
+          },
+          "dependencies": {}
+        }
+      }
+    },
+    "orderManagement": {
+      "services": {
+        "OrdermanagementService": {
+          "tables": {
+            "order_items": {
+              "fields": [
+                "product_id",
+                "quantity",
+                "unit_price"
+              ]
+            },
+            "orders": {
+              "fields": [
+                "order_date",
+                "order_id",
+                "total_amount"
+              ]
+            }
+          },
+          "dependencies": {
+            "productCatalog": [
+              "ProductcatalogService"
+            ],
+            "supplierManagement": [
+              "SuppliermanagementService"
+            ]
+          }
+        }
+      }
+    },
+    "productCatalog": {
+      "services": {
+        "ProductcatalogService": {
+          "tables": {
+            "inventory": {
+              "fields": [
+                "stock_quantity"
+              ]
+            },
+            "products": {
+              "fields": [
+                "category",
+                "product_name"
+              ]
+            }
+          },
+          "dependencies": {}
+        }
+      }
+    },
+    "supplierManagement": {
+      "services": {
+        "SuppliermanagementService": {
+          "tables": {
+            "suppliers": {
+              "fields": [
+                "contact_email",
+                "supplier_name"
+              ]
+            }
+          },
+          "dependencies": {}
+        }
+      }
+    },
+    "paymentProcessing": {
+      "services": {
+        "PaymentprocessingService": {
+          "tables": {
+            "payments": {
+              "fields": [
+                "amount",
+                "order_id",
+                "payment_date",
+                "payment_id",
+                "payment_method",
+                "payment_status"
+              ]
+            }
+          },
+          "dependencies": {
+            "orderManagement": [
+              "OrdermanagementService"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "nodes": [
+    {
+      "id": "proc::GetCustomerOrderSummary",
+      "type": "procedure",
+      "label": "GetCustomerOrderSummary",
+      "properties": {
+        "procedure": "GetCustomerOrderSummary",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::customerManagement",
+      "type": "domain",
+      "label": "customerManagement",
+      "properties": {
+        "domain": "customerManagement",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::CustomermanagementService",
+      "type": "service",
+      "label": "CustomermanagementService",
+      "properties": {
+        "domain": "customerManagement",
+        "service": "CustomermanagementService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::audit_logs",
+      "type": "table",
+      "label": "audit_logs",
+      "properties": {
+        "table": "audit_logs",
+        "domain": "customerManagement",
+        "service": "CustomermanagementService",
+        "fields": [
+          "operation",
+          "record_id",
+          "table_name",
+          "timestamp",
+          "user_id"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::audit_logs::operation",
+      "type": "field",
+      "label": "operation",
+      "properties": {
+        "field": "operation",
+        "table": "audit_logs",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::audit_logs::record_id",
+      "type": "field",
+      "label": "record_id",
+      "properties": {
+        "field": "record_id",
+        "table": "audit_logs",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::audit_logs::table_name",
+      "type": "field",
+      "label": "table_name",
+      "properties": {
+        "field": "table_name",
+        "table": "audit_logs",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::audit_logs::timestamp",
+      "type": "field",
+      "label": "timestamp",
+      "properties": {
+        "field": "timestamp",
+        "table": "audit_logs",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::audit_logs::user_id",
+      "type": "field",
+      "label": "user_id",
+      "properties": {
+        "field": "user_id",
+        "table": "audit_logs",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::customers",
+      "type": "table",
+      "label": "customers",
+      "properties": {
+        "table": "customers",
+        "domain": "customerManagement",
+        "service": "CustomermanagementService",
+        "fields": [
+          "address",
+          "customer_name",
+          "email",
+          "last_access_date",
+          "phone"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::customers::address",
+      "type": "field",
+      "label": "address",
+      "properties": {
+        "field": "address",
+        "table": "customers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::customers::customer_name",
+      "type": "field",
+      "label": "customer_name",
+      "properties": {
+        "field": "customer_name",
+        "table": "customers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::customers::email",
+      "type": "field",
+      "label": "email",
+      "properties": {
+        "field": "email",
+        "table": "customers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::customers::last_access_date",
+      "type": "field",
+      "label": "last_access_date",
+      "properties": {
+        "field": "last_access_date",
+        "table": "customers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::customers::phone",
+      "type": "field",
+      "label": "phone",
+      "properties": {
+        "field": "phone",
+        "table": "customers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::orderManagement",
+      "type": "domain",
+      "label": "orderManagement",
+      "properties": {
+        "domain": "orderManagement",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::OrdermanagementService",
+      "type": "service",
+      "label": "OrdermanagementService",
+      "properties": {
+        "domain": "orderManagement",
+        "service": "OrdermanagementService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::order_items",
+      "type": "table",
+      "label": "order_items",
+      "properties": {
+        "table": "order_items",
+        "domain": "orderManagement",
+        "service": "OrdermanagementService",
+        "fields": [
+          "product_id",
+          "quantity",
+          "unit_price"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::order_items::product_id",
+      "type": "field",
+      "label": "product_id",
+      "properties": {
+        "field": "product_id",
+        "table": "order_items",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::order_items::quantity",
+      "type": "field",
+      "label": "quantity",
+      "properties": {
+        "field": "quantity",
+        "table": "order_items",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::order_items::unit_price",
+      "type": "field",
+      "label": "unit_price",
+      "properties": {
+        "field": "unit_price",
+        "table": "order_items",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::orders",
+      "type": "table",
+      "label": "orders",
+      "properties": {
+        "table": "orders",
+        "domain": "orderManagement",
+        "service": "OrdermanagementService",
+        "fields": [
+          "order_date",
+          "order_id",
+          "total_amount"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::orders::order_date",
+      "type": "field",
+      "label": "order_date",
+      "properties": {
+        "field": "order_date",
+        "table": "orders",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::orders::order_id",
+      "type": "field",
+      "label": "order_id",
+      "properties": {
+        "field": "order_id",
+        "table": "orders",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::orders::total_amount",
+      "type": "field",
+      "label": "total_amount",
+      "properties": {
+        "field": "total_amount",
+        "table": "orders",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::productCatalog",
+      "type": "domain",
+      "label": "productCatalog",
+      "properties": {
+        "domain": "productCatalog",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::ProductcatalogService",
+      "type": "service",
+      "label": "ProductcatalogService",
+      "properties": {
+        "domain": "productCatalog",
+        "service": "ProductcatalogService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::inventory",
+      "type": "table",
+      "label": "inventory",
+      "properties": {
+        "table": "inventory",
+        "domain": "productCatalog",
+        "service": "ProductcatalogService",
+        "fields": [
+          "stock_quantity"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::inventory::stock_quantity",
+      "type": "field",
+      "label": "stock_quantity",
+      "properties": {
+        "field": "stock_quantity",
+        "table": "inventory",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::products",
+      "type": "table",
+      "label": "products",
+      "properties": {
+        "table": "products",
+        "domain": "productCatalog",
+        "service": "ProductcatalogService",
+        "fields": [
+          "category",
+          "product_name"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::products::category",
+      "type": "field",
+      "label": "category",
+      "properties": {
+        "field": "category",
+        "table": "products",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::products::product_name",
+      "type": "field",
+      "label": "product_name",
+      "properties": {
+        "field": "product_name",
+        "table": "products",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::supplierManagement",
+      "type": "domain",
+      "label": "supplierManagement",
+      "properties": {
+        "domain": "supplierManagement",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::SuppliermanagementService",
+      "type": "service",
+      "label": "SuppliermanagementService",
+      "properties": {
+        "domain": "supplierManagement",
+        "service": "SuppliermanagementService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::suppliers",
+      "type": "table",
+      "label": "suppliers",
+      "properties": {
+        "table": "suppliers",
+        "domain": "supplierManagement",
+        "service": "SuppliermanagementService",
+        "fields": [
+          "contact_email",
+          "supplier_name"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::suppliers::contact_email",
+      "type": "field",
+      "label": "contact_email",
+      "properties": {
+        "field": "contact_email",
+        "table": "suppliers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::suppliers::supplier_name",
+      "type": "field",
+      "label": "supplier_name",
+      "properties": {
+        "field": "supplier_name",
+        "table": "suppliers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::paymentProcessing",
+      "type": "domain",
+      "label": "paymentProcessing",
+      "properties": {
+        "domain": "paymentProcessing",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::PaymentprocessingService",
+      "type": "service",
+      "label": "PaymentprocessingService",
+      "properties": {
+        "domain": "paymentProcessing",
+        "service": "PaymentprocessingService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments",
+      "type": "table",
+      "label": "payments",
+      "properties": {
+        "table": "payments",
+        "domain": "paymentProcessing",
+        "service": "PaymentprocessingService",
+        "fields": [
+          "amount",
+          "order_id",
+          "payment_date",
+          "payment_id",
+          "payment_method",
+          "payment_status"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::payments::amount",
+      "type": "field",
+      "label": "amount",
+      "properties": {
+        "field": "amount",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::payments::order_id",
+      "type": "field",
+      "label": "order_id",
+      "properties": {
+        "field": "order_id",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::payments::payment_date",
+      "type": "field",
+      "label": "payment_date",
+      "properties": {
+        "field": "payment_date",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::payments::payment_id",
+      "type": "field",
+      "label": "payment_id",
+      "properties": {
+        "field": "payment_id",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::payments::payment_method",
+      "type": "field",
+      "label": "payment_method",
+      "properties": {
+        "field": "payment_method",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::payments::payment_status",
+      "type": "field",
+      "label": "payment_status",
+      "properties": {
+        "field": "payment_status",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "proc::GetCustomerOrderSummary::HAS_DOMAIN::domain::customerManagement",
+      "source": "proc::GetCustomerOrderSummary",
+      "target": "domain::customerManagement",
+      "type": "has_domain",
+      "properties": {
+        "procedure": "GetCustomerOrderSummary",
+        "domain": "customerManagement",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::customerManagement::HAS_SERVICE::service::CustomermanagementService",
+      "source": "domain::customerManagement",
+      "target": "service::CustomermanagementService",
+      "type": "has_service",
+      "properties": {
+        "domain": "customerManagement",
+        "service": "CustomermanagementService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::CustomermanagementService::USES_TABLE::table::audit_logs",
+      "source": "service::CustomermanagementService",
+      "target": "table::audit_logs",
+      "type": "uses_table",
+      "properties": {
+        "service": "CustomermanagementService",
+        "table": "audit_logs",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::audit_logs::HAS_FIELD::field::audit_logs::operation",
+      "source": "table::audit_logs",
+      "target": "field::audit_logs::operation",
+      "type": "has_field",
+      "properties": {
+        "table": "audit_logs",
+        "field": "operation",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::audit_logs::HAS_FIELD::field::audit_logs::record_id",
+      "source": "table::audit_logs",
+      "target": "field::audit_logs::record_id",
+      "type": "has_field",
+      "properties": {
+        "table": "audit_logs",
+        "field": "record_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::audit_logs::HAS_FIELD::field::audit_logs::table_name",
+      "source": "table::audit_logs",
+      "target": "field::audit_logs::table_name",
+      "type": "has_field",
+      "properties": {
+        "table": "audit_logs",
+        "field": "table_name",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::audit_logs::HAS_FIELD::field::audit_logs::timestamp",
+      "source": "table::audit_logs",
+      "target": "field::audit_logs::timestamp",
+      "type": "has_field",
+      "properties": {
+        "table": "audit_logs",
+        "field": "timestamp",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::audit_logs::HAS_FIELD::field::audit_logs::user_id",
+      "source": "table::audit_logs",
+      "target": "field::audit_logs::user_id",
+      "type": "has_field",
+      "properties": {
+        "table": "audit_logs",
+        "field": "user_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::CustomermanagementService::USES_TABLE::table::customers",
+      "source": "service::CustomermanagementService",
+      "target": "table::customers",
+      "type": "uses_table",
+      "properties": {
+        "service": "CustomermanagementService",
+        "table": "customers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::customers::HAS_FIELD::field::customers::address",
+      "source": "table::customers",
+      "target": "field::customers::address",
+      "type": "has_field",
+      "properties": {
+        "table": "customers",
+        "field": "address",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::customers::HAS_FIELD::field::customers::customer_name",
+      "source": "table::customers",
+      "target": "field::customers::customer_name",
+      "type": "has_field",
+      "properties": {
+        "table": "customers",
+        "field": "customer_name",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::customers::HAS_FIELD::field::customers::email",
+      "source": "table::customers",
+      "target": "field::customers::email",
+      "type": "has_field",
+      "properties": {
+        "table": "customers",
+        "field": "email",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::customers::HAS_FIELD::field::customers::last_access_date",
+      "source": "table::customers",
+      "target": "field::customers::last_access_date",
+      "type": "has_field",
+      "properties": {
+        "table": "customers",
+        "field": "last_access_date",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::customers::HAS_FIELD::field::customers::phone",
+      "source": "table::customers",
+      "target": "field::customers::phone",
+      "type": "has_field",
+      "properties": {
+        "table": "customers",
+        "field": "phone",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "proc::GetCustomerOrderSummary::HAS_DOMAIN::domain::orderManagement",
+      "source": "proc::GetCustomerOrderSummary",
+      "target": "domain::orderManagement",
+      "type": "has_domain",
+      "properties": {
+        "procedure": "GetCustomerOrderSummary",
+        "domain": "orderManagement",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::orderManagement::HAS_SERVICE::service::OrdermanagementService",
+      "source": "domain::orderManagement",
+      "target": "service::OrdermanagementService",
+      "type": "has_service",
+      "properties": {
+        "domain": "orderManagement",
+        "service": "OrdermanagementService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::OrdermanagementService::USES_TABLE::table::order_items",
+      "source": "service::OrdermanagementService",
+      "target": "table::order_items",
+      "type": "uses_table",
+      "properties": {
+        "service": "OrdermanagementService",
+        "table": "order_items",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::order_items::HAS_FIELD::field::order_items::product_id",
+      "source": "table::order_items",
+      "target": "field::order_items::product_id",
+      "type": "has_field",
+      "properties": {
+        "table": "order_items",
+        "field": "product_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::order_items::HAS_FIELD::field::order_items::quantity",
+      "source": "table::order_items",
+      "target": "field::order_items::quantity",
+      "type": "has_field",
+      "properties": {
+        "table": "order_items",
+        "field": "quantity",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::order_items::HAS_FIELD::field::order_items::unit_price",
+      "source": "table::order_items",
+      "target": "field::order_items::unit_price",
+      "type": "has_field",
+      "properties": {
+        "table": "order_items",
+        "field": "unit_price",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::OrdermanagementService::USES_TABLE::table::orders",
+      "source": "service::OrdermanagementService",
+      "target": "table::orders",
+      "type": "uses_table",
+      "properties": {
+        "service": "OrdermanagementService",
+        "table": "orders",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::orders::HAS_FIELD::field::orders::order_date",
+      "source": "table::orders",
+      "target": "field::orders::order_date",
+      "type": "has_field",
+      "properties": {
+        "table": "orders",
+        "field": "order_date",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::orders::HAS_FIELD::field::orders::order_id",
+      "source": "table::orders",
+      "target": "field::orders::order_id",
+      "type": "has_field",
+      "properties": {
+        "table": "orders",
+        "field": "order_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::orders::HAS_FIELD::field::orders::total_amount",
+      "source": "table::orders",
+      "target": "field::orders::total_amount",
+      "type": "has_field",
+      "properties": {
+        "table": "orders",
+        "field": "total_amount",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "proc::GetCustomerOrderSummary::HAS_DOMAIN::domain::productCatalog",
+      "source": "proc::GetCustomerOrderSummary",
+      "target": "domain::productCatalog",
+      "type": "has_domain",
+      "properties": {
+        "procedure": "GetCustomerOrderSummary",
+        "domain": "productCatalog",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::productCatalog::HAS_SERVICE::service::ProductcatalogService",
+      "source": "domain::productCatalog",
+      "target": "service::ProductcatalogService",
+      "type": "has_service",
+      "properties": {
+        "domain": "productCatalog",
+        "service": "ProductcatalogService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::ProductcatalogService::USES_TABLE::table::inventory",
+      "source": "service::ProductcatalogService",
+      "target": "table::inventory",
+      "type": "uses_table",
+      "properties": {
+        "service": "ProductcatalogService",
+        "table": "inventory",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::inventory::HAS_FIELD::field::inventory::stock_quantity",
+      "source": "table::inventory",
+      "target": "field::inventory::stock_quantity",
+      "type": "has_field",
+      "properties": {
+        "table": "inventory",
+        "field": "stock_quantity",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::ProductcatalogService::USES_TABLE::table::products",
+      "source": "service::ProductcatalogService",
+      "target": "table::products",
+      "type": "uses_table",
+      "properties": {
+        "service": "ProductcatalogService",
+        "table": "products",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::products::HAS_FIELD::field::products::category",
+      "source": "table::products",
+      "target": "field::products::category",
+      "type": "has_field",
+      "properties": {
+        "table": "products",
+        "field": "category",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::products::HAS_FIELD::field::products::product_name",
+      "source": "table::products",
+      "target": "field::products::product_name",
+      "type": "has_field",
+      "properties": {
+        "table": "products",
+        "field": "product_name",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "proc::GetCustomerOrderSummary::HAS_DOMAIN::domain::supplierManagement",
+      "source": "proc::GetCustomerOrderSummary",
+      "target": "domain::supplierManagement",
+      "type": "has_domain",
+      "properties": {
+        "procedure": "GetCustomerOrderSummary",
+        "domain": "supplierManagement",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::supplierManagement::HAS_SERVICE::service::SuppliermanagementService",
+      "source": "domain::supplierManagement",
+      "target": "service::SuppliermanagementService",
+      "type": "has_service",
+      "properties": {
+        "domain": "supplierManagement",
+        "service": "SuppliermanagementService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::SuppliermanagementService::USES_TABLE::table::suppliers",
+      "source": "service::SuppliermanagementService",
+      "target": "table::suppliers",
+      "type": "uses_table",
+      "properties": {
+        "service": "SuppliermanagementService",
+        "table": "suppliers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::suppliers::HAS_FIELD::field::suppliers::contact_email",
+      "source": "table::suppliers",
+      "target": "field::suppliers::contact_email",
+      "type": "has_field",
+      "properties": {
+        "table": "suppliers",
+        "field": "contact_email",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::suppliers::HAS_FIELD::field::suppliers::supplier_name",
+      "source": "table::suppliers",
+      "target": "field::suppliers::supplier_name",
+      "type": "has_field",
+      "properties": {
+        "table": "suppliers",
+        "field": "supplier_name",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "proc::GetCustomerOrderSummary::HAS_DOMAIN::domain::paymentProcessing",
+      "source": "proc::GetCustomerOrderSummary",
+      "target": "domain::paymentProcessing",
+      "type": "has_domain",
+      "properties": {
+        "procedure": "GetCustomerOrderSummary",
+        "domain": "paymentProcessing",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::paymentProcessing::HAS_SERVICE::service::PaymentprocessingService",
+      "source": "domain::paymentProcessing",
+      "target": "service::PaymentprocessingService",
+      "type": "has_service",
+      "properties": {
+        "domain": "paymentProcessing",
+        "service": "PaymentprocessingService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::PaymentprocessingService::USES_TABLE::table::payments",
+      "source": "service::PaymentprocessingService",
+      "target": "table::payments",
+      "type": "uses_table",
+      "properties": {
+        "service": "PaymentprocessingService",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments::HAS_FIELD::field::payments::amount",
+      "source": "table::payments",
+      "target": "field::payments::amount",
+      "type": "has_field",
+      "properties": {
+        "table": "payments",
+        "field": "amount",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments::HAS_FIELD::field::payments::order_id",
+      "source": "table::payments",
+      "target": "field::payments::order_id",
+      "type": "has_field",
+      "properties": {
+        "table": "payments",
+        "field": "order_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments::HAS_FIELD::field::payments::payment_date",
+      "source": "table::payments",
+      "target": "field::payments::payment_date",
+      "type": "has_field",
+      "properties": {
+        "table": "payments",
+        "field": "payment_date",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments::HAS_FIELD::field::payments::payment_id",
+      "source": "table::payments",
+      "target": "field::payments::payment_id",
+      "type": "has_field",
+      "properties": {
+        "table": "payments",
+        "field": "payment_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments::HAS_FIELD::field::payments::payment_method",
+      "source": "table::payments",
+      "target": "field::payments::payment_method",
+      "type": "has_field",
+      "properties": {
+        "table": "payments",
+        "field": "payment_method",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments::HAS_FIELD::field::payments::payment_status",
+      "source": "table::payments",
+      "target": "field::payments::payment_status",
+      "type": "has_field",
+      "properties": {
+        "table": "payments",
+        "field": "payment_status",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::OrdermanagementService::DEPENDS_ON::service::ProductcatalogService",
+      "source": "service::OrdermanagementService",
+      "target": "service::ProductcatalogService",
+      "type": "depends_on",
+      "properties": {
+        "source_service": "OrdermanagementService",
+        "target_service": "ProductcatalogService",
+        "source_domain": "orderManagement",
+        "target_domain": "productCatalog",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::OrdermanagementService::DEPENDS_ON::service::SuppliermanagementService",
+      "source": "service::OrdermanagementService",
+      "target": "service::SuppliermanagementService",
+      "type": "depends_on",
+      "properties": {
+        "source_service": "OrdermanagementService",
+        "target_service": "SuppliermanagementService",
+        "source_domain": "orderManagement",
+        "target_domain": "supplierManagement",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::PaymentprocessingService::DEPENDS_ON::service::OrdermanagementService",
+      "source": "service::PaymentprocessingService",
+      "target": "service::OrdermanagementService",
+      "type": "depends_on",
+      "properties": {
+        "source_service": "PaymentprocessingService",
+        "target_service": "OrdermanagementService",
+        "source_domain": "paymentProcessing",
+        "target_domain": "orderManagement",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    }
+  ],
+  "graphdb_entry": {
+    "procedure": {
+      "name": "GetCustomerOrderSummary",
+      "request_id": "request_001"
+    },
+    "domains": {
+      "customerManagement": {
+        "services": {
+          "CustomermanagementService": {
+            "tables": {
+              "audit_logs": {
+                "fields": [
+                  "operation",
+                  "record_id",
+                  "table_name",
+                  "timestamp",
+                  "user_id"
+                ]
+              },
+              "customers": {
+                "fields": [
+                  "address",
+                  "customer_name",
+                  "email",
+                  "last_access_date",
+                  "phone"
+                ]
+              }
+            },
+            "dependencies": {}
+          }
+        }
+      },
+      "orderManagement": {
+        "services": {
+          "OrdermanagementService": {
+            "tables": {
+              "order_items": {
+                "fields": [
+                  "product_id",
+                  "quantity",
+                  "unit_price"
+                ]
+              },
+              "orders": {
+                "fields": [
+                  "order_date",
+                  "order_id",
+                  "total_amount"
+                ]
+              }
+            },
+            "dependencies": {
+              "productCatalog": [
+                "ProductcatalogService"
+              ],
+              "supplierManagement": [
+                "SuppliermanagementService"
+              ]
+            }
+          }
+        }
+      },
+      "productCatalog": {
+        "services": {
+          "ProductcatalogService": {
+            "tables": {
+              "inventory": {
+                "fields": [
+                  "stock_quantity"
+                ]
+              },
+              "products": {
+                "fields": [
+                  "category",
+                  "product_name"
+                ]
+              }
+            },
+            "dependencies": {}
+          }
+        }
+      },
+      "supplierManagement": {
+        "services": {
+          "SuppliermanagementService": {
+            "tables": {
+              "suppliers": {
+                "fields": [
+                  "contact_email",
+                  "supplier_name"
+                ]
+              }
+            },
+            "dependencies": {}
+          }
+        }
+      },
+      "paymentProcessing": {
+        "services": {
+          "PaymentprocessingService": {
+            "tables": {
+              "payments": {
+                "fields": [
+                  "amount",
+                  "order_id",
+                  "payment_date",
+                  "payment_id",
+                  "payment_method",
+                  "payment_status"
+                ]
+              }
+            },
+            "dependencies": {
+              "orderManagement": [
+                "OrdermanagementService"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

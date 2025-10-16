@@ -1,0 +1,8 @@
+com\barclays\uscb\customermanagementservice\service\CustomermanagementService.class
+com\barclays\uscb\customermanagementservice\service\impl\CustomermanagementServiceImpl.class
+com\barclays\uscb\customermanagementservice\repository\CustomermanagementRepository.class
+com\barclays\uscb\customermanagementservice\exception\GlobalExceptionHandler.class
+com\barclays\uscb\customermanagementservice\mapper\CustomermanagementMapper.class
+com\barclays\uscb\customermanagementservice\entity\CustomermanagementEntity.class
+com\barclays\uscb\customermanagementservice\controller\CustomermanagementController.class
+com\barclays\uscb\customermanagementservice\Application.class

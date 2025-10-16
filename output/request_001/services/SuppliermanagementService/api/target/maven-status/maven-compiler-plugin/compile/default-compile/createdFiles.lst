@@ -1,0 +1,8 @@
+com\barclays\uscb\suppliermanagementservice\mapper\SuppliermanagementMapper.class
+com\barclays\uscb\suppliermanagementservice\service\impl\SuppliermanagementServiceImpl.class
+com\barclays\uscb\suppliermanagementservice\exception\GlobalExceptionHandler.class
+com\barclays\uscb\suppliermanagementservice\service\SuppliermanagementService.class
+com\barclays\uscb\suppliermanagementservice\controller\SuppliermanagementController.class
+com\barclays\uscb\suppliermanagementservice\entity\SuppliermanagementEntity.class
+com\barclays\uscb\suppliermanagementservice\Application.class
+com\barclays\uscb\suppliermanagementservice\repository\SuppliermanagementRepository.class

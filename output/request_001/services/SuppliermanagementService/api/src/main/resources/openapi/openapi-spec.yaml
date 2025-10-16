@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: SuppliermanagementService API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /health:
+    get:
+      tags:
+        - SuppliermanagementService
+      summary: Service health check
+      operationId: SuppliermanagementServiceHealth
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuppliermanagementHealthResponse'
+  /suppliers:
+    get:
+      tags:
+        - Suppliers
+      summary: Fetch suppliers
+      operationId: getSuppliers
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SuppliersRecord'
+components:
+  schemas:
+    SuppliermanagementHealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    GenericResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    SuppliersRecord:
+      type: object
+      properties:
+        contact_email:
+          type: string
+        supplier_name:
+          type: string

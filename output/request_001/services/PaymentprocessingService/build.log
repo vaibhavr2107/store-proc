@@ -1,0 +1,90 @@
+Command: C:\Program Files\Apache\apache-maven-3.9.11\bin\mvn.cmd -B -DskipTests clean package
+Return code: 0
+
+--- STDOUT ---
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] paymentprocessing-service-parent                                   [pom]
+[INFO] paymentprocessing-service-oasgen                                   [jar]
+[INFO] paymentprocessing-service-api                                      [jar]
+[INFO] 
+[INFO] --< com.barclays.uscb.paymentprocessingservice:paymentprocessing-service-parent >--
+[INFO] Building paymentprocessing-service-parent 0.0.1-SNAPSHOT           [1/3]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ paymentprocessing-service-parent ---
+[INFO] 
+[INFO] --< com.barclays.uscb.paymentprocessingservice:paymentprocessing-service-oasgen >--
+[INFO] Building paymentprocessing-service-oasgen 0.0.1-SNAPSHOT           [2/3]
+[INFO]   from oasgen\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ paymentprocessing-service-oasgen ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ paymentprocessing-service-oasgen ---
+[INFO] skip non existing resourceDirectory D:\Projects\store-proc\output\request_001\services\PaymentprocessingService\oasgen\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Projects\store-proc\output\request_001\services\PaymentprocessingService\oasgen\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ paymentprocessing-service-oasgen ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 4 source files with javac [debug release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ paymentprocessing-service-oasgen ---
+[INFO] skip non existing resourceDirectory D:\Projects\store-proc\output\request_001\services\PaymentprocessingService\oasgen\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ paymentprocessing-service-oasgen ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ paymentprocessing-service-oasgen ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.3.0:jar (default-jar) @ paymentprocessing-service-oasgen ---
+[INFO] Building jar: D:\Projects\store-proc\output\request_001\services\PaymentprocessingService\oasgen\target\paymentprocessing-service-oasgen-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --< com.barclays.uscb.paymentprocessingservice:paymentprocessing-service-api >--
+[INFO] Building paymentprocessing-service-api 0.0.1-SNAPSHOT              [3/3]
+[INFO]   from api\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ paymentprocessing-service-api ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ paymentprocessing-service-api ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ paymentprocessing-service-api ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 8 source files with javac [debug release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ paymentprocessing-service-api ---
+[INFO] skip non existing resourceDirectory D:\Projects\store-proc\output\request_001\services\PaymentprocessingService\api\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ paymentprocessing-service-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ paymentprocessing-service-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.3.0:jar (default-jar) @ paymentprocessing-service-api ---
+[INFO] Building jar: D:\Projects\store-proc\output\request_001\services\PaymentprocessingService\api\target\paymentprocessing-service-api-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.2.0:repackage (repackage) @ paymentprocessing-service-api ---
+[INFO] Replacing main artifact D:\Projects\store-proc\output\request_001\services\PaymentprocessingService\api\target\paymentprocessing-service-api-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to D:\Projects\store-proc\output\request_001\services\PaymentprocessingService\api\target\paymentprocessing-service-api-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for paymentprocessing-service-parent 0.0.1-SNAPSHOT:
+[INFO] 
+[INFO] paymentprocessing-service-parent ................... SUCCESS [  0.353 s]
+[INFO] paymentprocessing-service-oasgen ................... SUCCESS [  4.675 s]
+[INFO] paymentprocessing-service-api ...................... SUCCESS [  5.129 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  11.142 s
+[INFO] Finished at: 2025-10-17T01:34:37+05:30
+[INFO] ------------------------------------------------------------------------
+
+--- STDERR ---

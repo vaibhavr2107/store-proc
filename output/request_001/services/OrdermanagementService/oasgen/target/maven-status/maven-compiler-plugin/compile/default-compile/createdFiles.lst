@@ -1,0 +1,5 @@
+com\barclays\uscb\ordermanagementservice\model\OrdersRecord.class
+com\barclays\uscb\ordermanagementservice\model\OrderItemsRecord.class
+com\barclays\uscb\ordermanagementservice\api\OrdermanagementApi.class
+com\barclays\uscb\ordermanagementservice\invoker\ApiClient.class
+com\barclays\uscb\ordermanagementservice\model\OrdermanagementHealthResponse.class

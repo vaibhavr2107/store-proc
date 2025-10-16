@@ -1,0 +1,5 @@
+com\barclays\uscb\customermanagementservice\model\CustomersRecord.class
+com\barclays\uscb\customermanagementservice\model\AuditLogsRecord.class
+com\barclays\uscb\customermanagementservice\invoker\ApiClient.class
+com\barclays\uscb\customermanagementservice\model\CustomermanagementHealthResponse.class
+com\barclays\uscb\customermanagementservice\api\CustomermanagementApi.class

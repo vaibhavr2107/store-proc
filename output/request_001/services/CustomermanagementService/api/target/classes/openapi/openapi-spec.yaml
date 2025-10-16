@@ -1,0 +1,120 @@
+openapi: 3.0.3
+info:
+  title: CustomermanagementService API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /health:
+    get:
+      tags:
+        - CustomermanagementService
+      summary: Service health check
+      operationId: CustomermanagementServiceHealth
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomermanagementHealthResponse'
+  /audit-logs:
+    post:
+      tags:
+        - AuditLogs
+      summary: Create audit_logs
+      operationId: createAuditLogs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditLogsRecord'
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogsRecord'
+  /customers:
+    get:
+      tags:
+        - Customers
+      summary: Fetch customers
+      operationId: getCustomers
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomersRecord'
+  /customers/{address}:
+    put:
+      tags:
+        - Customers
+      summary: Update customers
+      operationId: updateCustomers
+      parameters:
+        - name: address
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomersRecord'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomersRecord'
+components:
+  schemas:
+    CustomermanagementHealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    GenericResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    AuditLogsRecord:
+      type: object
+      properties:
+        operation:
+          type: string
+        record_id:
+          type: string
+        table_name:
+          type: string
+        timestamp:
+          type: string
+        user_id:
+          type: string
+    CustomersRecord:
+      type: object
+      properties:
+        address:
+          type: string
+        customer_name:
+          type: string
+        email:
+          type: string
+        last_access_date:
+          type: string
+        phone:
+          type: string

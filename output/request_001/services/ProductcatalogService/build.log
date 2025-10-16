@@ -1,0 +1,90 @@
+Command: C:\Program Files\Apache\apache-maven-3.9.11\bin\mvn.cmd -B -DskipTests clean package
+Return code: 0
+
+--- STDOUT ---
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] productcatalog-service-parent                                      [pom]
+[INFO] productcatalog-service-oasgen                                      [jar]
+[INFO] productcatalog-service-api                                         [jar]
+[INFO] 
+[INFO] --< com.barclays.uscb.productcatalogservice:productcatalog-service-parent >--
+[INFO] Building productcatalog-service-parent 0.0.1-SNAPSHOT              [1/3]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ productcatalog-service-parent ---
+[INFO] 
+[INFO] --< com.barclays.uscb.productcatalogservice:productcatalog-service-oasgen >--
+[INFO] Building productcatalog-service-oasgen 0.0.1-SNAPSHOT              [2/3]
+[INFO]   from oasgen\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ productcatalog-service-oasgen ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ productcatalog-service-oasgen ---
+[INFO] skip non existing resourceDirectory D:\Projects\store-proc\output\request_001\services\ProductcatalogService\oasgen\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Projects\store-proc\output\request_001\services\ProductcatalogService\oasgen\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ productcatalog-service-oasgen ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 5 source files with javac [debug release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ productcatalog-service-oasgen ---
+[INFO] skip non existing resourceDirectory D:\Projects\store-proc\output\request_001\services\ProductcatalogService\oasgen\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ productcatalog-service-oasgen ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ productcatalog-service-oasgen ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.3.0:jar (default-jar) @ productcatalog-service-oasgen ---
+[INFO] Building jar: D:\Projects\store-proc\output\request_001\services\ProductcatalogService\oasgen\target\productcatalog-service-oasgen-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --< com.barclays.uscb.productcatalogservice:productcatalog-service-api >--
+[INFO] Building productcatalog-service-api 0.0.1-SNAPSHOT                 [3/3]
+[INFO]   from api\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ productcatalog-service-api ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ productcatalog-service-api ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ productcatalog-service-api ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 8 source files with javac [debug release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ productcatalog-service-api ---
+[INFO] skip non existing resourceDirectory D:\Projects\store-proc\output\request_001\services\ProductcatalogService\api\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ productcatalog-service-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ productcatalog-service-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.3.0:jar (default-jar) @ productcatalog-service-api ---
+[INFO] Building jar: D:\Projects\store-proc\output\request_001\services\ProductcatalogService\api\target\productcatalog-service-api-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.2.0:repackage (repackage) @ productcatalog-service-api ---
+[INFO] Replacing main artifact D:\Projects\store-proc\output\request_001\services\ProductcatalogService\api\target\productcatalog-service-api-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to D:\Projects\store-proc\output\request_001\services\ProductcatalogService\api\target\productcatalog-service-api-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for productcatalog-service-parent 0.0.1-SNAPSHOT:
+[INFO] 
+[INFO] productcatalog-service-parent ...................... SUCCESS [  0.365 s]
+[INFO] productcatalog-service-oasgen ...................... SUCCESS [  4.686 s]
+[INFO] productcatalog-service-api ......................... SUCCESS [  5.125 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  11.113 s
+[INFO] Finished at: 2025-10-17T01:34:37+05:30
+[INFO] ------------------------------------------------------------------------
+
+--- STDERR ---
