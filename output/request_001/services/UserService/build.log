@@ -79,14 +79,14 @@ Return code: 0
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary for user-service-parent 0.0.1-SNAPSHOT:
 [INFO] 
-[INFO] user-service-parent ................................ SUCCESS [  0.251 s]
-[INFO] user-service-oasgen ................................ SUCCESS [  2.817 s]
-[INFO] user-service-api ................................... SUCCESS [  3.237 s]
+[INFO] user-service-parent ................................ SUCCESS [  0.240 s]
+[INFO] user-service-oasgen ................................ SUCCESS [  2.991 s]
+[INFO] user-service-api ................................... SUCCESS [  3.209 s]
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  6.922 s
-[INFO] Finished at: 2025-10-16T23:39:32+05:30
+[INFO] Total time:  7.040 s
+[INFO] Finished at: 2025-10-16T23:42:28+05:30
 [INFO] ------------------------------------------------------------------------
 
 --- STDERR ---

@@ -35,6 +35,7 @@ UserService coordinates user domain responsibilities across tables customers.
 - api/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst: Service resource file.
 - api/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst: Service resource file.
 - api/target/user-service-api-0.0.1-SNAPSHOT.jar: Service resource file.
+- api/target/user-service-api-0.0.1-SNAPSHOT.jar.original: Service resource file.
 - build.log: Service resource file.
 - oasgen/pom.xml: Maven project configuration.
 - oasgen/src/main/java/com/barclays/uscb/userservice/api/UserApi.java: Java source file.
