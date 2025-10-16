@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: {service_name} API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /health:
+    get:
+      summary: Service health check
+      responses:
+        '200':
+          description: Healthy
+

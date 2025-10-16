@@ -1,0 +1,32 @@
+Procedure: OrderFulfillmentProc
+
+Summary:
+The stored procedure orchestrates data retrieval across tables: customers, delivery, invoices, orders, payment_methods, payments.
+
+Domain Mapping:
+- order: orders, delivery, invoices
+- user: customers
+- payment: payments, payment_methods
+
+Inter-Domain Dependencies:
+No inter-domain dependencies identified.
+
+Table Aliases:
+- o -> orders
+- c -> customers
+- pay -> payments
+- pmn -> payment_methods
+- d -> delivery
+- inv -> invoices
+
+CRUD Summary:
+- customers:
+  • READ: customer_id, customer_name
+- delivery:
+  • READ: delivery_id, delivery_status
+- orders:
+  • READ: order_date, order_id
+- payment_methods:
+  • READ: method_name
+- payments:
+  • READ: payment_id, status

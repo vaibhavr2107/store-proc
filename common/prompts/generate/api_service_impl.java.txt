@@ -1,0 +1,17 @@
+package {base_package}.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import {base_package}.model.{entity_name}HealthResponse;
+import {base_package}.service.{entity_name}Service;
+
+@Service
+public class {entity_name}ServiceImpl implements {entity_name}Service {{
+
+    @Override
+    public {entity_name}HealthResponse health() {{
+        {entity_name}HealthResponse response = new {entity_name}HealthResponse();
+        response.setStatus("UP");
+        return response;
+    }}
+}}

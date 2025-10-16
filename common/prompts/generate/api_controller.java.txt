@@ -1,0 +1,23 @@
+package {base_package}.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
+import {base_package}.api.{entity_name}Api;
+import {base_package}.model.{entity_name}HealthResponse;
+import {base_package}.service.{entity_name}Service;
+
+@RestController
+public class {entity_name}Controller implements {entity_name}Api {{
+
+    private final {entity_name}Service {entity_var}Service;
+
+    public {entity_name}Controller({entity_name}Service {entity_var}Service) {{
+        this.{entity_var}Service = {entity_var}Service;
+    }}
+
+    @Override
+    public ResponseEntity<{entity_name}HealthResponse> healthCheck() {{
+        return ResponseEntity.ok({entity_var}Service.health());
+    }}
+}}

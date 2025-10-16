@@ -1,0 +1,11 @@
+{{
+  "service": {service_name_json},
+  "domain": {domain_json},
+  "request_ids": [{request_ids_json}],
+  "owned_tables": [{owned_tables_json}],
+  "dependencies": [{dependencies_json}],
+  "description": {service_description_json},
+  "dependency_summary": {dependency_summary_json},
+  "directory_structure": {directory_structure_json},
+  "api_endpoints": {api_endpoints_json}
+}}

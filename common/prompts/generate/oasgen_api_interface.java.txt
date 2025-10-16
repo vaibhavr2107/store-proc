@@ -1,0 +1,14 @@
+package {base_package}.api;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import {base_package}.model.{entity_name}HealthResponse;
+
+@RequestMapping("/health")
+public interface {entity_name}Api {{
+
+    @GetMapping
+    ResponseEntity<{entity_name}HealthResponse> healthCheck();
+}}

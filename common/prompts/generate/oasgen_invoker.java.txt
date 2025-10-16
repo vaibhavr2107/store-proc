@@ -1,0 +1,18 @@
+package {base_package}.invoker;
+
+import java.time.OffsetDateTime;
+
+import {base_package}.model.{entity_name}HealthResponse;
+
+public final class ApiClient {{
+
+    private ApiClient() {{
+    }}
+
+    public static {entity_name}HealthResponse healthResponse(String status) {{
+        {entity_name}HealthResponse response = new {entity_name}HealthResponse();
+        response.setStatus(status);
+        response.setTimestamp(OffsetDateTime.now());
+        return response;
+    }}
+}}

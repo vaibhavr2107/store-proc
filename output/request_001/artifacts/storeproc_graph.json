@@ -1,0 +1,698 @@
+{
+  "procedure": {
+    "id": "proc::OrderFulfillmentProc",
+    "name": "OrderFulfillmentProc",
+    "request_id": "request_001"
+  },
+  "domains": {
+    "order": {
+      "services": {
+        "OrderService": {
+          "tables": {
+            "orders": {
+              "fields": [
+                "order_date",
+                "order_id"
+              ]
+            },
+            "delivery": {
+              "fields": [
+                "delivery_id",
+                "delivery_status"
+              ]
+            },
+            "invoices": {
+              "fields": []
+            }
+          },
+          "dependencies": {}
+        }
+      }
+    },
+    "user": {
+      "services": {
+        "UserService": {
+          "tables": {
+            "customers": {
+              "fields": [
+                "customer_id",
+                "customer_name"
+              ]
+            }
+          },
+          "dependencies": {}
+        }
+      }
+    },
+    "payment": {
+      "services": {
+        "PaymentService": {
+          "tables": {
+            "payments": {
+              "fields": [
+                "payment_id",
+                "status"
+              ]
+            },
+            "payment_methods": {
+              "fields": [
+                "method_name"
+              ]
+            }
+          },
+          "dependencies": {}
+        }
+      }
+    }
+  },
+  "nodes": [
+    {
+      "id": "proc::OrderFulfillmentProc",
+      "type": "procedure",
+      "label": "OrderFulfillmentProc",
+      "properties": {
+        "procedure": "OrderFulfillmentProc",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::order",
+      "type": "domain",
+      "label": "order",
+      "properties": {
+        "domain": "order",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::OrderService",
+      "type": "service",
+      "label": "OrderService",
+      "properties": {
+        "domain": "order",
+        "service": "OrderService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::orders",
+      "type": "table",
+      "label": "orders",
+      "properties": {
+        "table": "orders",
+        "domain": "order",
+        "service": "OrderService",
+        "fields": [
+          "order_date",
+          "order_id"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::orders::order_date",
+      "type": "field",
+      "label": "order_date",
+      "properties": {
+        "field": "order_date",
+        "table": "orders",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::orders::order_id",
+      "type": "field",
+      "label": "order_id",
+      "properties": {
+        "field": "order_id",
+        "table": "orders",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::delivery",
+      "type": "table",
+      "label": "delivery",
+      "properties": {
+        "table": "delivery",
+        "domain": "order",
+        "service": "OrderService",
+        "fields": [
+          "delivery_id",
+          "delivery_status"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::delivery::delivery_id",
+      "type": "field",
+      "label": "delivery_id",
+      "properties": {
+        "field": "delivery_id",
+        "table": "delivery",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::delivery::delivery_status",
+      "type": "field",
+      "label": "delivery_status",
+      "properties": {
+        "field": "delivery_status",
+        "table": "delivery",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::invoices",
+      "type": "table",
+      "label": "invoices",
+      "properties": {
+        "table": "invoices",
+        "domain": "order",
+        "service": "OrderService",
+        "fields": [],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::user",
+      "type": "domain",
+      "label": "user",
+      "properties": {
+        "domain": "user",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::UserService",
+      "type": "service",
+      "label": "UserService",
+      "properties": {
+        "domain": "user",
+        "service": "UserService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::customers",
+      "type": "table",
+      "label": "customers",
+      "properties": {
+        "table": "customers",
+        "domain": "user",
+        "service": "UserService",
+        "fields": [
+          "customer_id",
+          "customer_name"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::customers::customer_id",
+      "type": "field",
+      "label": "customer_id",
+      "properties": {
+        "field": "customer_id",
+        "table": "customers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::customers::customer_name",
+      "type": "field",
+      "label": "customer_name",
+      "properties": {
+        "field": "customer_name",
+        "table": "customers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::payment",
+      "type": "domain",
+      "label": "payment",
+      "properties": {
+        "domain": "payment",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::PaymentService",
+      "type": "service",
+      "label": "PaymentService",
+      "properties": {
+        "domain": "payment",
+        "service": "PaymentService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments",
+      "type": "table",
+      "label": "payments",
+      "properties": {
+        "table": "payments",
+        "domain": "payment",
+        "service": "PaymentService",
+        "fields": [
+          "payment_id",
+          "status"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::payments::payment_id",
+      "type": "field",
+      "label": "payment_id",
+      "properties": {
+        "field": "payment_id",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::payments::status",
+      "type": "field",
+      "label": "status",
+      "properties": {
+        "field": "status",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payment_methods",
+      "type": "table",
+      "label": "payment_methods",
+      "properties": {
+        "table": "payment_methods",
+        "domain": "payment",
+        "service": "PaymentService",
+        "fields": [
+          "method_name"
+        ],
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "field::payment_methods::method_name",
+      "type": "field",
+      "label": "method_name",
+      "properties": {
+        "field": "method_name",
+        "table": "payment_methods",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "proc::OrderFulfillmentProc::HAS_DOMAIN::domain::order",
+      "source": "proc::OrderFulfillmentProc",
+      "target": "domain::order",
+      "type": "has_domain",
+      "properties": {
+        "procedure": "OrderFulfillmentProc",
+        "domain": "order",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::order::HAS_SERVICE::service::OrderService",
+      "source": "domain::order",
+      "target": "service::OrderService",
+      "type": "has_service",
+      "properties": {
+        "domain": "order",
+        "service": "OrderService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::OrderService::USES_TABLE::table::orders",
+      "source": "service::OrderService",
+      "target": "table::orders",
+      "type": "uses_table",
+      "properties": {
+        "service": "OrderService",
+        "table": "orders",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::orders::HAS_FIELD::field::orders::order_date",
+      "source": "table::orders",
+      "target": "field::orders::order_date",
+      "type": "has_field",
+      "properties": {
+        "table": "orders",
+        "field": "order_date",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::orders::HAS_FIELD::field::orders::order_id",
+      "source": "table::orders",
+      "target": "field::orders::order_id",
+      "type": "has_field",
+      "properties": {
+        "table": "orders",
+        "field": "order_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::OrderService::USES_TABLE::table::delivery",
+      "source": "service::OrderService",
+      "target": "table::delivery",
+      "type": "uses_table",
+      "properties": {
+        "service": "OrderService",
+        "table": "delivery",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::delivery::HAS_FIELD::field::delivery::delivery_id",
+      "source": "table::delivery",
+      "target": "field::delivery::delivery_id",
+      "type": "has_field",
+      "properties": {
+        "table": "delivery",
+        "field": "delivery_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::delivery::HAS_FIELD::field::delivery::delivery_status",
+      "source": "table::delivery",
+      "target": "field::delivery::delivery_status",
+      "type": "has_field",
+      "properties": {
+        "table": "delivery",
+        "field": "delivery_status",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::OrderService::USES_TABLE::table::invoices",
+      "source": "service::OrderService",
+      "target": "table::invoices",
+      "type": "uses_table",
+      "properties": {
+        "service": "OrderService",
+        "table": "invoices",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "proc::OrderFulfillmentProc::HAS_DOMAIN::domain::user",
+      "source": "proc::OrderFulfillmentProc",
+      "target": "domain::user",
+      "type": "has_domain",
+      "properties": {
+        "procedure": "OrderFulfillmentProc",
+        "domain": "user",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::user::HAS_SERVICE::service::UserService",
+      "source": "domain::user",
+      "target": "service::UserService",
+      "type": "has_service",
+      "properties": {
+        "domain": "user",
+        "service": "UserService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::UserService::USES_TABLE::table::customers",
+      "source": "service::UserService",
+      "target": "table::customers",
+      "type": "uses_table",
+      "properties": {
+        "service": "UserService",
+        "table": "customers",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::customers::HAS_FIELD::field::customers::customer_id",
+      "source": "table::customers",
+      "target": "field::customers::customer_id",
+      "type": "has_field",
+      "properties": {
+        "table": "customers",
+        "field": "customer_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::customers::HAS_FIELD::field::customers::customer_name",
+      "source": "table::customers",
+      "target": "field::customers::customer_name",
+      "type": "has_field",
+      "properties": {
+        "table": "customers",
+        "field": "customer_name",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "proc::OrderFulfillmentProc::HAS_DOMAIN::domain::payment",
+      "source": "proc::OrderFulfillmentProc",
+      "target": "domain::payment",
+      "type": "has_domain",
+      "properties": {
+        "procedure": "OrderFulfillmentProc",
+        "domain": "payment",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "domain::payment::HAS_SERVICE::service::PaymentService",
+      "source": "domain::payment",
+      "target": "service::PaymentService",
+      "type": "has_service",
+      "properties": {
+        "domain": "payment",
+        "service": "PaymentService",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::PaymentService::USES_TABLE::table::payments",
+      "source": "service::PaymentService",
+      "target": "table::payments",
+      "type": "uses_table",
+      "properties": {
+        "service": "PaymentService",
+        "table": "payments",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments::HAS_FIELD::field::payments::payment_id",
+      "source": "table::payments",
+      "target": "field::payments::payment_id",
+      "type": "has_field",
+      "properties": {
+        "table": "payments",
+        "field": "payment_id",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payments::HAS_FIELD::field::payments::status",
+      "source": "table::payments",
+      "target": "field::payments::status",
+      "type": "has_field",
+      "properties": {
+        "table": "payments",
+        "field": "status",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "service::PaymentService::USES_TABLE::table::payment_methods",
+      "source": "service::PaymentService",
+      "target": "table::payment_methods",
+      "type": "uses_table",
+      "properties": {
+        "service": "PaymentService",
+        "table": "payment_methods",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    },
+    {
+      "id": "table::payment_methods::HAS_FIELD::field::payment_methods::method_name",
+      "source": "table::payment_methods",
+      "target": "field::payment_methods::method_name",
+      "type": "has_field",
+      "properties": {
+        "table": "payment_methods",
+        "field": "method_name",
+        "request_ids": [
+          "request_001"
+        ]
+      }
+    }
+  ],
+  "graphdb_entry": {
+    "procedure": {
+      "name": "OrderFulfillmentProc",
+      "request_id": "request_001"
+    },
+    "domains": {
+      "order": {
+        "services": {
+          "OrderService": {
+            "tables": {
+              "orders": {
+                "fields": [
+                  "order_date",
+                  "order_id"
+                ]
+              },
+              "delivery": {
+                "fields": [
+                  "delivery_id",
+                  "delivery_status"
+                ]
+              },
+              "invoices": {
+                "fields": []
+              }
+            },
+            "dependencies": {}
+          }
+        }
+      },
+      "user": {
+        "services": {
+          "UserService": {
+            "tables": {
+              "customers": {
+                "fields": [
+                  "customer_id",
+                  "customer_name"
+                ]
+              }
+            },
+            "dependencies": {}
+          }
+        }
+      },
+      "payment": {
+        "services": {
+          "PaymentService": {
+            "tables": {
+              "payments": {
+                "fields": [
+                  "payment_id",
+                  "status"
+                ]
+              },
+              "payment_methods": {
+                "fields": [
+                  "method_name"
+                ]
+              }
+            },
+            "dependencies": {}
+          }
+        }
+      }
+    }
+  }
+}

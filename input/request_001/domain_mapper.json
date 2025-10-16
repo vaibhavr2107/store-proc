@@ -1,0 +1,5 @@
+{
+    "order": ["orders", "delivery", "invoices"],
+    "user": ["customers"],
+    "payment": ["payments", "payment_methods"]
+}

@@ -1,0 +1,8 @@
+package {base_package}.service;
+
+import {base_package}.model.{entity_name}HealthResponse;
+
+public interface {entity_name}Service {{
+
+    {entity_name}HealthResponse health();
+}}

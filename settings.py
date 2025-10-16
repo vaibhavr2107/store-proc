@@ -1,0 +1,33 @@
+from __future__ import annotations
+
+PROJECT_SETTINGS = {
+    "llm": {
+        "provider": "custom",
+        "base_url": "https://openrouter.ai/api/v1",
+        "api_key": "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",
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "timeout": 30.0,
+        "headers": {
+            "HTTP-Referer": "https://store-proc-designer.local",
+            "X-Title": "Store Proc Designer",
+            "X-OpenRouter-Data-Collection-Opt-Out": "False",
+        },
+    },
+    "output_dir": "output",
+    "prompts_dir": "common/prompts/generate",
+    "generated_dir": "generated",
+    "input_dir": "input",
+    "request_id": "request_001",
+    "stored_procedure_filename": "storeproc.sql",
+    "domain_mapping_filename": "domain_mapper.json",
+    "debug": True,
+    "graph_json_filename": "storeproc_graph.json",
+    "graph_mermaid_filename": "storeproc_graph.mmd",
+    "graph_graphml_filename": "storeproc_graph.graphml",
+    "graph_mermaid_png_filename": "storeproc_graph.png",
+    "services_subdir": "services",
+    "artifacts_subdir": "artifacts",
+    "graphdb_dir": "common/graphdb",
+    "graphdb_file": "graphdb.json",
+    "service_base_package_pattern": "com.barclays.uscb.{service}",
+}

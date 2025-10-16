@@ -1,0 +1,124 @@
+{
+  "stored_procedures": {
+    "SampleProc": {
+      "request_ids": [
+        "request_001"
+      ],
+      "domains": {
+        "sales": {
+          "services": {
+            "SalesService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "table1": {
+                  "fields": []
+                },
+                "table2": {
+                  "fields": []
+                }
+              },
+              "dependencies": {},
+              "dependents": {}
+            }
+          }
+        },
+        "analytics": {
+          "services": {
+            "AnalyticsService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "table3": {
+                  "fields": []
+                }
+              },
+              "dependencies": {},
+              "dependents": {}
+            }
+          }
+        }
+      }
+    },
+    "OrderFulfillmentProc": {
+      "request_ids": [
+        "request_001"
+      ],
+      "domains": {
+        "order": {
+          "services": {
+            "OrderService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "orders": {
+                  "fields": [
+                    "order_date",
+                    "order_id"
+                  ]
+                },
+                "delivery": {
+                  "fields": [
+                    "delivery_id",
+                    "delivery_status"
+                  ]
+                },
+                "invoices": {
+                  "fields": []
+                }
+              },
+              "dependencies": {},
+              "dependents": {}
+            }
+          }
+        },
+        "user": {
+          "services": {
+            "UserService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "customers": {
+                  "fields": [
+                    "customer_id",
+                    "customer_name"
+                  ]
+                }
+              },
+              "dependencies": {},
+              "dependents": {}
+            }
+          }
+        },
+        "payment": {
+          "services": {
+            "PaymentService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "payments": {
+                  "fields": [
+                    "payment_id",
+                    "status"
+                  ]
+                },
+                "payment_methods": {
+                  "fields": [
+                    "method_name"
+                  ]
+                }
+              },
+              "dependencies": {},
+              "dependents": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

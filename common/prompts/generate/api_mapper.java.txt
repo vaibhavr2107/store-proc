@@ -1,0 +1,18 @@
+package {base_package}.mapper;
+
+import {base_package}.entity.{entity_name}Entity;
+import {base_package}.model.{entity_name}HealthResponse;
+
+public final class {entity_name}Mapper {{
+
+    private {entity_name}Mapper() {{
+    }}
+
+    public static {entity_name}HealthResponse toHealthResponse({entity_name}Entity entity) {{
+        {entity_name}HealthResponse response = new {entity_name}HealthResponse();
+        if (entity != null) {{
+            response.setStatus(entity.getStatus());
+        }}
+        return response;
+    }}
+}}
