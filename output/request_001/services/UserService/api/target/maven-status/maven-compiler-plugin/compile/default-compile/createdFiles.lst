@@ -1,0 +1,8 @@
+com\barclays\uscb\userservice\entity\UserEntity.class
+com\barclays\uscb\userservice\repository\UserRepository.class
+com\barclays\uscb\userservice\service\UserService.class
+com\barclays\uscb\userservice\exception\GlobalExceptionHandler.class
+com\barclays\uscb\userservice\mapper\UserMapper.class
+com\barclays\uscb\userservice\controller\UserController.class
+com\barclays\uscb\userservice\Application.class
+com\barclays\uscb\userservice\service\impl\UserServiceImpl.class

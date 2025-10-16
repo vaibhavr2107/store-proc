@@ -257,7 +257,28 @@ def _build_clean_architecture_files(spec: Dict[str, Any]) -> List[Dict[str, str]
             "path": "api/src/main/resources/openapi/openapi-spec.yaml",
             "template": "api_openapi_spec.yaml.txt",
         },
+        {
+            "path": f"oasgen/src/main/java/{base_package_path}/api/{entity_name}Api.java",
+            "template": "oasgen_api_interface.java.txt",
+        },
+        {
+            "path": f"oasgen/src/main/java/{base_package_path}/invoker/ApiClient.java",
+            "template": "oasgen_invoker.java.txt",
+        },
+        {
+            "path": f"oasgen/src/main/java/{base_package_path}/model/{entity_name}HealthResponse.java",
+            "template": "oasgen_model.java.txt",
+        },
     ]
+    for table in sorted(spec.get("table_fields_map", {}).keys()):
+        record_name = f"{_pascal_case(table)}Record"
+        files.append(
+            {
+                "path": f"oasgen/src/main/java/{base_package_path}/model/{record_name}.java",
+                "template": "__dynamic_oasgen_record_model__",
+                "table": table,
+            }
+        )
     return files
 
 

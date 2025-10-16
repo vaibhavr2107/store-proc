@@ -1,0 +1,8 @@
+com\barclays\uscb\orderservice\repository\OrderRepository.class
+com\barclays\uscb\orderservice\controller\OrderController.class
+com\barclays\uscb\orderservice\mapper\OrderMapper.class
+com\barclays\uscb\orderservice\exception\GlobalExceptionHandler.class
+com\barclays\uscb\orderservice\entity\OrderEntity.class
+com\barclays\uscb\orderservice\service\OrderService.class
+com\barclays\uscb\orderservice\Application.class
+com\barclays\uscb\orderservice\service\impl\OrderServiceImpl.class

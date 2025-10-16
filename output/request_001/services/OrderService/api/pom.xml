@@ -65,33 +65,6 @@
                     <release>21</release>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>${openapi.generator.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-contract</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/openapi/openapi-spec.yaml</inputSpec>
-                            <generatorName>spring</generatorName>
-                            <output>${project.parent.basedir}/oasgen</output>
-                            <apiPackage>com.barclays.uscb.orderservice.api</apiPackage>
-                            <modelPackage>com.barclays.uscb.orderservice.model</modelPackage>
-                            <configOptions>
-                                <dateLibrary>java8</dateLibrary>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useTags>true</useTags>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 </project>
-

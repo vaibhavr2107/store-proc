@@ -1,14 +1,19 @@
 package com.barclays.uscb.paymentservice.api;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.barclays.uscb.paymentservice.model.PaymentHealthResponse;
+import java.util.List;
+import java.util.Map;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/health")
 public interface PaymentApi {
 
-    @GetMapping
-    ResponseEntity<PaymentHealthResponse> healthCheck();
+    @GetMapping("/health")
+    ResponseEntity<PaymentHealthResponse> paymentServiceHealth();
+
+    @GetMapping("/payments")
+    ResponseEntity<List<Map<String, Object>>> getPayments();
+
+    @GetMapping("/payment-methods")
+    ResponseEntity<List<Map<String, Object>>> getPaymentMethods();
 }

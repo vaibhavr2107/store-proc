@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: UserService API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /health:
+    get:
+      tags:
+        - UserService
+      summary: Service health check
+      operationId: UserServiceHealth
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHealthResponse'
+  /customers:
+    get:
+      tags:
+        - Customers
+      summary: Fetch customers
+      operationId: getCustomers
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomersRecord'
+components:
+  schemas:
+    UserHealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    GenericResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    CustomersRecord:
+      type: object
+      properties:
+        customer_id:
+          type: string
+        customer_name:
+          type: string

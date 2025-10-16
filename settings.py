@@ -29,5 +29,7 @@ PROJECT_SETTINGS = {
     "artifacts_subdir": "artifacts",
     "graphdb_dir": "common/graphdb",
     "graphdb_file": "graphdb.json",
+    "maven_executable": "C:\\Program Files\\Apache\\apache-maven-3.9.11\\bin\\mvn.cmd",
     "service_base_package_pattern": "com.barclays.uscb.{service}",
+    "java_home": r"C:\Program Files\Java\jdk-21",
 }

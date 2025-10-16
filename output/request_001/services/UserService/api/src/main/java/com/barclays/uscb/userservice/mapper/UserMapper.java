@@ -1,5 +1,6 @@
 package com.barclays.uscb.userservice.mapper;
 
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -13,7 +14,8 @@ public final class UserMapper {
 
     public static UserHealthResponse toHealthResponse(UserEntity entity) {
         UserHealthResponse response = new UserHealthResponse();
-        response.setStatus(entity != null ? entity.getStatus() : "UNKNOWN");
+        response.setStatus(entity != null ? "UP" : "UNKNOWN");
+        response.setTimestamp(OffsetDateTime.now());
         return response;
     }
 

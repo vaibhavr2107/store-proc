@@ -25,6 +25,9 @@ DYNAMIC_GENERATORS: Dict[str, str] = {
     "api_repository.java.txt": "_render_repository",
     "api_entity.java.txt": "_render_entity",
     "api_mapper.java.txt": "_render_mapper",
+    "oasgen_api_interface.java.txt": "_render_oasgen_interface",
+    "oasgen_model.java.txt": "_render_oasgen_health_model",
+    "__dynamic_oasgen_record_model__": "_render_oasgen_record_model",
 }
 
 
@@ -72,7 +75,7 @@ def generate_service(service_spec: Dict[str, Any], agent: CodeGeneratorAgent, pr
         template_name = file_spec["template"]
         generator_name = DYNAMIC_GENERATORS.get(template_name)
         if generator_name:
-            content = globals()[generator_name](service_spec)
+            content = globals()[generator_name](service_spec, file_spec)
         else:
             template_content = load_prompt(template_name, prompts_dir)
             try:
@@ -113,7 +116,7 @@ def run_code_generator(service_architecture: Dict[str, Any], prompts_dir: Path |
 # ----------------------------
 
 
-def _render_openapi_spec(service_spec: Dict[str, Any]) -> str:
+def _render_openapi_spec(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
     service_name = service_spec.get("service_name", "Service")
     entity_name = service_spec.get("entity_name", "Entity")
     endpoints = service_spec.get("endpoints", [])
@@ -210,7 +213,7 @@ def _render_openapi_spec(service_spec: Dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _render_controller(service_spec: Dict[str, Any]) -> str:
+def _render_controller(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
     base_package = service_spec.get("base_package", "")
     entity_name = service_spec.get("entity_name", "Entity")
     entity_var = service_spec.get("entity_var", "entity")
@@ -255,7 +258,7 @@ def _render_controller(service_spec: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _render_service_interface(service_spec: Dict[str, Any]) -> str:
+def _render_service_interface(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
     base_package = service_spec.get("base_package", "")
     entity_name = service_spec.get("entity_name", "Entity")
     endpoints = service_spec.get("endpoints", [])
@@ -283,7 +286,7 @@ def _render_service_interface(service_spec: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _render_service_impl(service_spec: Dict[str, Any]) -> str:
+def _render_service_impl(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
     base_package = service_spec.get("base_package", "")
     entity_name = service_spec.get("entity_name", "Entity")
     endpoints = service_spec.get("endpoints", [])
@@ -325,7 +328,7 @@ def _render_service_impl(service_spec: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _render_repository(service_spec: Dict[str, Any]) -> str:
+def _render_repository(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
     base_package = service_spec.get("base_package", "")
     entity_name = service_spec.get("entity_name", "Entity")
     return "\n".join(
@@ -343,7 +346,7 @@ def _render_repository(service_spec: Dict[str, Any]) -> str:
     )
 
 
-def _render_entity(service_spec: Dict[str, Any]) -> str:
+def _render_entity(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
     base_package = service_spec.get("base_package", "")
     entity_name = service_spec.get("entity_name", "Entity")
     table_name = service_spec.get("primary_table", entity_name.lower())
@@ -406,13 +409,14 @@ def _render_entity(service_spec: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _render_mapper(service_spec: Dict[str, Any]) -> str:
+def _render_mapper(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
     base_package = service_spec.get("base_package", "")
     entity_name = service_spec.get("entity_name", "Entity")
     return "\n".join(
         [
             f"package {base_package}.mapper;",
             "",
+            "import java.time.OffsetDateTime;",
             "import java.util.Collections;",
             "import java.util.Map;",
             "",
@@ -427,6 +431,7 @@ def _render_mapper(service_spec: Dict[str, Any]) -> str:
             f"    public static {entity_name}HealthResponse toHealthResponse({entity_name}Entity entity) {{",
             f"        {entity_name}HealthResponse response = new {entity_name}HealthResponse();",
             "        response.setStatus(entity != null ? \"UP\" : \"UNKNOWN\");",
+            "        response.setTimestamp(OffsetDateTime.now());",
             "        return response;",
             "    }",
             "",
@@ -437,6 +442,105 @@ def _render_mapper(service_spec: Dict[str, Any]) -> str:
             "",
         ]
     )
+
+
+def _render_oasgen_interface(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
+    base_package = service_spec.get("base_package", "")
+    entity_name = service_spec.get("entity_name", "Entity")
+    entity_var = service_spec.get("entity_var", "entity")
+    endpoints = service_spec.get("endpoints", [])
+
+    imports = {
+        "org.springframework.http.ResponseEntity",
+        "org.springframework.web.bind.annotation.*",
+        f"{base_package}.model.{entity_name}HealthResponse",
+    }
+    if any(ep.get("action") != "health" for ep in endpoints):
+        imports.add("java.util.List")
+        imports.add("java.util.Map")
+
+    lines = [f"package {base_package}.api;", ""]
+    for imp in sorted(imports):
+        lines.append(f"import {imp};")
+    lines.append("")
+    lines.append(f"public interface {entity_name}Api {{")
+    for endpoint in endpoints:
+        lines.append("")
+        lines.append(f"    {_mapping_annotation(endpoint)}")
+        signature, _ = _controller_method(endpoint, entity_var, entity_name)
+        interface_signature = signature.replace("public ", "", 1)
+        lines.append(f"    {interface_signature};")
+    lines.append("}")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def _render_oasgen_health_model(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
+    base_package = service_spec.get("base_package", "")
+    entity_name = service_spec.get("entity_name", "Entity")
+    return "\n".join(
+        [
+            f"package {base_package}.model;",
+            "",
+            "import java.time.OffsetDateTime;",
+            "",
+            f"public class {entity_name}HealthResponse {{",
+            "",
+            "    private String status;",
+            "    private OffsetDateTime timestamp = OffsetDateTime.now();",
+            "",
+            "    public String getStatus() {",
+            "        return status;",
+            "    }",
+            "",
+            "    public void setStatus(String status) {",
+            "        this.status = status;",
+            "    }",
+            "",
+            "    public OffsetDateTime getTimestamp() {",
+            "        return timestamp;",
+            "    }",
+            "",
+            "    public void setTimestamp(OffsetDateTime timestamp) {",
+            "        this.timestamp = timestamp;",
+            "    }",
+            "}",
+            "",
+        ]
+    )
+
+
+def _render_oasgen_record_model(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
+    base_package = service_spec.get("base_package", "")
+    table_fields_map = service_spec.get("table_fields_map", {})
+    table = (file_spec or {}).get("table")
+    columns = list(table_fields_map.get(table or "", []) or ["id"])
+    if file_spec and "path" in file_spec:
+        class_name = Path(file_spec["path"]).stem
+    else:
+        class_name = _schema_name(table)
+    if not class_name:
+        class_name = "GenericRecord"
+
+    lines = [f"package {base_package}.model;", ""]
+    lines.append(f"public class {class_name} {{")
+    for column in columns:
+        camel = _camel(column)
+        lines.append(f"    private String {camel};")
+    for column in columns:
+        camel = _camel(column)
+        pascal = _pascal(column)
+        lines.append("")
+        lines.append(f"    public String get{pascal}() {{")
+        lines.append(f"        return {camel};")
+        lines.append("    }")
+        lines.append("")
+        lines.append(f"    public void set{pascal}(String {camel}) {{")
+        lines.append(f"        this.{camel} = {camel};")
+        lines.append("    }")
+    lines.append("}")
+    lines.append("")
+    return "\n".join(lines)
 
 
 # ----------------------------
