@@ -61,8 +61,16 @@ def _augment_service_spec(spec: Dict[str, Any], service_data: Dict[str, Any], do
         table: list(domain_mapped_proc.get("table_fields", {}).get(table, []))
         for table in service_data.get("owned_tables", [])
     }
+    table_field_details_map = {
+        table: list(domain_mapped_proc.get("table_field_details", {}).get(table, []))
+        for table in service_data.get("owned_tables", [])
+    }
     table_operations_map = {
         table: dict(domain_mapped_proc.get("table_operation_columns", {}).get(table, {}))
+        for table in service_data.get("owned_tables", [])
+    }
+    table_dependencies_map = {
+        table: list(domain_mapped_proc.get("table_dependencies", {}).get(table, []))
         for table in service_data.get("owned_tables", [])
     }
     table_id_map = {
@@ -72,8 +80,14 @@ def _augment_service_spec(spec: Dict[str, Any], service_data: Dict[str, Any], do
     for table, id_column in table_id_map.items():
         if id_column and id_column not in table_fields_map.get(table, []):
             table_fields_map.setdefault(table, []).insert(0, id_column)
+        if id_column:
+            detail_list = table_field_details_map.setdefault(table, [])
+            if all(detail.get("name") != id_column for detail in detail_list):
+                detail_list.insert(0, {"name": id_column, "type": "string"})
     spec["table_fields_map"] = table_fields_map
+    spec["table_field_details_map"] = table_field_details_map
     spec["table_operation_columns_map"] = table_operations_map
+    spec["table_dependencies_map"] = table_dependencies_map
     spec["table_id_columns"] = table_id_map
     primary_table = service_data.get("owned_tables", [spec["service_slug"]])[0]
     primary_fields = list(table_fields_map.get(primary_table, []))

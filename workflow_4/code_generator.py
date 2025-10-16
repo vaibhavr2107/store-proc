@@ -289,34 +289,46 @@ def _render_service_interface(service_spec: Dict[str, Any], file_spec: Optional[
 def _render_service_impl(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
     base_package = service_spec.get("base_package", "")
     entity_name = service_spec.get("entity_name", "Entity")
+    entity_var = service_spec.get("entity_var", "entity")
     endpoints = service_spec.get("endpoints", [])
+    repository_name = f"{entity_name}Repository"
+    repository_var = f"{entity_var}Repository"
 
-    lines = [
-        f"package {base_package}.service.impl;",
-        "",
-        "import java.util.Collections;",
-        "import java.util.List;",
-        "import java.util.Map;",
-        "",
-        "import org.springframework.stereotype.Service;",
-        "",
-        f"import {base_package}.invoker.ApiClient;",
-        f"import {base_package}.model.{entity_name}HealthResponse;",
-        f"import {base_package}.service.{entity_name}Service;",
-        "",
-        "@Service",
-        f"public class {entity_name}ServiceImpl implements {entity_name}Service {{",
-        "",
-        "    @Override",
-        f"    public {entity_name}HealthResponse health() {{",
-        "        return ApiClient.healthResponse(\"UP\");",
-        "    }",
-    ]
+    imports = {
+        "java.util.Collections",
+        "java.util.List",
+        "java.util.Map",
+        "java.util.stream.Collectors",
+        "org.springframework.stereotype.Service",
+        f"{base_package}.entity.{entity_name}Entity",
+        f"{base_package}.invoker.ApiClient",
+        f"{base_package}.mapper.{entity_name}Mapper",
+        f"{base_package}.model.{entity_name}HealthResponse",
+        f"{base_package}.repository.{repository_name}",
+        f"{base_package}.service.{entity_name}Service",
+    }
+    lines = [f"package {base_package}.service.impl;", ""]
+    for imp in sorted(imports):
+        lines.append(f"import {imp};")
+    lines.append("")
+    lines.append("@Service")
+    lines.append(f"public class {entity_name}ServiceImpl implements {entity_name}Service {{")
+    lines.append("")
+    lines.append(f"    private final {repository_name} {repository_var};")
+    lines.append("")
+    lines.append(f"    public {entity_name}ServiceImpl({repository_name} {repository_var}) {{")
+    lines.append(f"        this.{repository_var} = {repository_var};")
+    lines.append("    }")
+    lines.append("")
+    lines.append("    @Override")
+    lines.append(f"    public {entity_name}HealthResponse health() {{")
+    lines.append("        return ApiClient.healthResponse(\"UP\");")
+    lines.append("    }")
     for endpoint in endpoints:
         if endpoint.get("action") == "health":
             continue
         signature = _service_signature(endpoint, include_public=True)
-        body_lines = _service_body(endpoint)
+        body_lines = _service_body(endpoint, service_spec, repository_var)
         lines.append("")
         lines.append("    @Override")
         lines.append(f"    {signature} {{")
@@ -412,36 +424,65 @@ def _render_entity(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, A
 def _render_mapper(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
     base_package = service_spec.get("base_package", "")
     entity_name = service_spec.get("entity_name", "Entity")
-    return "\n".join(
-        [
-            f"package {base_package}.mapper;",
-            "",
-            "import java.time.OffsetDateTime;",
-            "import java.util.Collections;",
-            "import java.util.Map;",
-            "",
-            f"import {base_package}.entity.{entity_name}Entity;",
-            f"import {base_package}.model.{entity_name}HealthResponse;",
-            "",
-            f"public final class {entity_name}Mapper {{",
-            "",
-            f"    private {entity_name}Mapper() {{",
-            "    }",
-            "",
-            f"    public static {entity_name}HealthResponse toHealthResponse({entity_name}Entity entity) {{",
-            f"        {entity_name}HealthResponse response = new {entity_name}HealthResponse();",
-            "        response.setStatus(entity != null ? \"UP\" : \"UNKNOWN\");",
-            "        response.setTimestamp(OffsetDateTime.now());",
-            "        return response;",
-            "    }",
-            "",
-            f"    public static Map<String, Object> toMap({entity_name}Entity entity) {{",
-            "        return Collections.emptyMap();",
-            "    }",
-            "}",
-            "",
-        ]
-    )
+    primary_table = service_spec.get("primary_table")
+    field_details = service_spec.get("table_field_details_map", {}).get(primary_table, [])
+    if not field_details:
+        field_details = [{"name": column, "type": "string"} for column in service_spec.get("primary_table_fields", [])]
+
+    lines = [
+        f"package {base_package}.mapper;",
+        "",
+        "import java.time.OffsetDateTime;",
+        "import java.util.Collections;",
+        "import java.util.LinkedHashMap;",
+        "import java.util.Map;",
+        "",
+        f"import {base_package}.entity.{entity_name}Entity;",
+        f"import {base_package}.model.{entity_name}HealthResponse;",
+        "",
+        f"public final class {entity_name}Mapper {{",
+        "",
+        f"    private {entity_name}Mapper() {{",
+        "    }",
+        "",
+        f"    public static {entity_name}HealthResponse toHealthResponse({entity_name}Entity entity) {{",
+        f"        {entity_name}HealthResponse response = new {entity_name}HealthResponse();",
+        "        response.setStatus(entity != null ? \"UP\" : \"UNKNOWN\");",
+        "        response.setTimestamp(OffsetDateTime.now());",
+        "        return response;",
+        "    }",
+        "",
+        f"    public static Map<String, Object> toMap({entity_name}Entity entity) {{",
+        "        if (entity == null) {",
+        "            return Collections.emptyMap();",
+        "        }",
+        "        Map<String, Object> target = new LinkedHashMap<>();",
+    ]
+    for field in field_details:
+        column = field.get("name")
+        camel = _camel(column)
+        pascal = _pascal(column)
+        lines.append(f"        target.put(\"{column}\", entity.get{pascal}());")
+    lines.append("        return target;")
+    lines.append("    }")
+    lines.append("")
+    lines.append(f"    public static {entity_name}Entity fromMap(Map<String, Object> source) {{")
+    lines.append(f"        {entity_name}Entity entity = new {entity_name}Entity();")
+    lines.append("        if (source == null) {")
+    lines.append("            return entity;")
+    lines.append("        }")
+    for field in field_details:
+        column = field.get("name")
+        camel = _camel(column)
+        pascal = _pascal(column)
+        lines.append(f"        if (source.containsKey(\"{column}\")) {{")
+        lines.append(f"            entity.set{pascal}(String.valueOf(source.get(\"{column}\")));")
+        lines.append("        }")
+    lines.append("        return entity;")
+    lines.append("    }")
+    lines.append("}")
+    lines.append("")
+    return "\n".join(lines)
 
 
 def _render_oasgen_interface(service_spec: Dict[str, Any], file_spec: Optional[Dict[str, Any]] | None = None) -> str:
@@ -595,14 +636,81 @@ def _service_signature(endpoint: Dict[str, Any], *, include_public: bool) -> str
     return f"{prefix}String {method_name}{param_str}"
 
 
-def _service_body(endpoint: Dict[str, Any]) -> List[str]:
+def _service_body(
+    endpoint: Dict[str, Any],
+    service_spec: Dict[str, Any],
+    repository_var: str,
+) -> List[str]:
     method = endpoint.get("method", "GET").upper()
+    action = endpoint.get("action")
+    endpoint_table = endpoint.get("table")
+    primary_table = service_spec.get("primary_table")
+    entity_name = service_spec.get("entity_name", "Entity")
+    mapper_name = f"{entity_name}Mapper"
+    entity_class = f"{entity_name}Entity"
+    id_column = service_spec.get("primary_id_column", "id")
+    id_pascal = _pascal(id_column or "id")
+    path_vars = _path_variables(endpoint)
+    id_var = _camel(path_vars[0]) if path_vars else _camel(id_column or "id")
+
+    if endpoint_table and primary_table and endpoint_table != primary_table:
+        if method == "GET":
+            return [
+                "// TODO implement lookup using downstream client for table "
+                + endpoint_table,
+                "return Collections.emptyList();",
+            ]
+        if method in {"POST", "PUT"}:
+            return [
+                "// TODO implement write logic for table " + endpoint_table,
+                "return Collections.emptyMap();",
+            ]
+        if method == "DELETE":
+            return ["// TODO implement delete logic for table " + endpoint_table]
+        return ["return \"NOT_IMPLEMENTED\";"]
+
     if method == "GET":
-        return ["return Collections.emptyList();"]
-    if method in {"POST", "PUT"}:
-        return ["return Collections.emptyMap();"]
+        if path_vars:
+            return [
+                f"return {repository_var}",
+                f"        .findById({id_var})",
+                f"        .map(entity -> Collections.singletonList({mapper_name}.toMap(entity)))",
+                "        .orElseGet(Collections::emptyList);",
+            ]
+        return [
+            f"return {repository_var}",
+            "        .findAll()",
+            f"        .stream()",
+            f"        .map({mapper_name}::toMap)",
+            "        .collect(Collectors.toList());",
+        ]
+
+    if method == "POST":
+        return [
+            f"{entity_class} entity = {mapper_name}.fromMap(body);",
+            f"{entity_class} saved = {repository_var}.save(entity);",
+            f"return {mapper_name}.toMap(saved);",
+        ]
+
+    if method == "PUT":
+        body_lines = [
+            f"{entity_class} entity = {mapper_name}.fromMap(body);",
+        ]
+        if path_vars:
+            body_lines.append(f"entity.set{id_pascal}({id_var});")
+        body_lines.extend(
+            [
+                f"{entity_class} saved = {repository_var}.save(entity);",
+                f"return {mapper_name}.toMap(saved);",
+            ]
+        )
+        return body_lines
+
     if method == "DELETE":
-        return ["// TODO implement delete logic"]
+        if path_vars:
+            return [f"{repository_var}.deleteById({id_var});"]
+        return ["// TODO provide identifier for delete operation"]
+
     return ["return \"NOT_IMPLEMENTED\";"]
 
 
@@ -692,6 +800,10 @@ def _endpoint_parameters(endpoint: Dict[str, Any], annotations: bool) -> Tuple[s
 
 def _openapi_parameters(endpoint: Dict[str, Any]) -> List[Dict[str, str]]:
     return [{"name": raw} for raw in _extract_path_variables(endpoint.get("path", ""))]
+
+
+def _path_variables(endpoint: Dict[str, Any]) -> List[str]:
+    return _extract_path_variables(endpoint.get("path", ""))
 
 
 def _extract_path_variables(path: str) -> List[str]:

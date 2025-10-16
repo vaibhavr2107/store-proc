@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any, Dict, List, Set
 
@@ -98,11 +99,25 @@ class StoreProcOverviewAgent:
             domain_lines.append(f"- {domain}: {', '.join(table_list)}")
         domain_section = "\n".join(domain_lines) or "No domain mappings found."
 
-        dependencies = _derive_domain_dependencies(domain_mapped_proc.get("table_domains", {}))
+        flow_lines = []
+        for step in domain_mapped_proc.get("procedure_steps", []):
+            descriptions = step.get("description", [])
+            if not descriptions:
+                continue
+            flow_lines.append(f"- {' '.join(descriptions)}")
+        flow_section = "\n".join(flow_lines) or "No explicit join flow detected."
+
+        dependencies = _derive_domain_dependencies(
+            domain_mapped_proc.get("table_domains", {}),
+            domain_mapped_proc.get("table_dependencies", {}),
+        )
         dependency_lines = []
-        for domain, deps in dependencies.items():
-            if deps:
-                dependency_lines.append(f"- {domain} depends on {', '.join(sorted(deps))}")
+        for domain, dep_map in dependencies.items():
+            if not dep_map:
+                continue
+            for dep_domain, table_pairs in dep_map.items():
+                tables_text = ", ".join(sorted(table_pairs))
+                dependency_lines.append(f"- {domain} depends on {dep_domain} via {tables_text}")
         dependency_section = "\n".join(dependency_lines) or "No inter-domain dependencies identified."
 
         alias_map = domain_mapped_proc.get("alias_map", {})
@@ -118,6 +133,9 @@ class StoreProcOverviewAgent:
             "Domain Mapping:",
             domain_section,
             "",
+            "Procedure Flow:",
+            flow_section,
+            "",
             "Inter-Domain Dependencies:",
             dependency_section,
             "",
@@ -127,13 +145,29 @@ class StoreProcOverviewAgent:
         return "\n".join(overview)
 
 
-def _derive_domain_dependencies(table_domains: Dict[str, List[str]]) -> Dict[str, Set[str]]:
-    dependencies: Dict[str, Set[str]] = {}
-    for table, domains in table_domains.items():
-        for domain in domains:
-            deps = dependencies.setdefault(domain, set())
-            deps.update(d for d in domains if d != domain)
-    return dependencies
+def _derive_domain_dependencies(
+    table_domains: Dict[str, List[str]],
+    table_dependencies: Dict[str, List[str]],
+) -> Dict[str, Dict[str, Set[str]]]:
+    domain_dependencies: Dict[str, Dict[str, Set[str]]] = defaultdict(lambda: defaultdict(set))
+    for source_table, dependent_tables in table_dependencies.items():
+        source_domains = table_domains.get(source_table, [])
+        if not source_domains:
+            continue
+        for dependent_table in dependent_tables:
+            target_domains = table_domains.get(dependent_table, [])
+            if not target_domains:
+                continue
+            for source_domain in source_domains:
+                for target_domain in target_domains:
+                    if source_domain == target_domain:
+                        continue
+                    domain_dependencies[source_domain][target_domain].add(f"{source_table}->{dependent_table}")
+    # convert to plain dicts
+    converted: Dict[str, Dict[str, Set[str]]] = {}
+    for domain, dep_map in domain_dependencies.items():
+        converted[domain] = {other: set(values) for other, values in dep_map.items()}
+    return converted
 
 
 def bootstrap_agents() -> Dict[str, Any]:

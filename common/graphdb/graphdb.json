@@ -119,6 +119,270 @@
           }
         }
       }
+    },
+    "GetCustomerOrderSummary": {
+      "request_ids": [
+        "request_001"
+      ],
+      "domains": {
+        "customerManagement": {
+          "services": {
+            "CustomermanagementService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "customers": {
+                  "fields": [
+                    "address",
+                    "customer_name",
+                    "email",
+                    "last_access_date",
+                    "phone"
+                  ]
+                },
+                "audit_logs": {
+                  "fields": [
+                    "operation",
+                    "record_id",
+                    "table_name",
+                    "timestamp",
+                    "user_id"
+                  ]
+                },
+                "customer": {
+                  "fields": []
+                }
+              },
+              "dependencies": {
+                "orderManagement": [
+                  "OrdermanagementService"
+                ],
+                "paymentProcessing": [
+                  "PaymentprocessingService"
+                ],
+                "productCatalog": [
+                  "ProductcatalogService"
+                ],
+                "supplierManagement": [
+                  "SuppliermanagementService"
+                ]
+              },
+              "dependents": {
+                "orderManagement": [
+                  "OrdermanagementService"
+                ],
+                "productCatalog": [
+                  "ProductcatalogService"
+                ],
+                "supplierManagement": [
+                  "SuppliermanagementService"
+                ],
+                "paymentProcessing": [
+                  "PaymentprocessingService"
+                ]
+              }
+            }
+          }
+        },
+        "orderManagement": {
+          "services": {
+            "OrdermanagementService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "orders": {
+                  "fields": [
+                    "order_date",
+                    "order_id",
+                    "total_amount"
+                  ]
+                },
+                "order_items": {
+                  "fields": [
+                    "product_id",
+                    "quantity",
+                    "unit_price"
+                  ]
+                }
+              },
+              "dependencies": {
+                "customerManagement": [
+                  "CustomermanagementService"
+                ],
+                "paymentProcessing": [
+                  "PaymentprocessingService"
+                ],
+                "productCatalog": [
+                  "ProductcatalogService"
+                ],
+                "supplierManagement": [
+                  "SuppliermanagementService"
+                ]
+              },
+              "dependents": {
+                "customerManagement": [
+                  "CustomermanagementService"
+                ],
+                "productCatalog": [
+                  "ProductcatalogService"
+                ],
+                "supplierManagement": [
+                  "SuppliermanagementService"
+                ],
+                "paymentProcessing": [
+                  "PaymentprocessingService"
+                ]
+              }
+            }
+          }
+        },
+        "productCatalog": {
+          "services": {
+            "ProductcatalogService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "products": {
+                  "fields": [
+                    "category",
+                    "product_name"
+                  ]
+                },
+                "inventory": {
+                  "fields": [
+                    "stock_quantity"
+                  ]
+                }
+              },
+              "dependencies": {
+                "customerManagement": [
+                  "CustomermanagementService"
+                ],
+                "orderManagement": [
+                  "OrdermanagementService"
+                ],
+                "paymentProcessing": [
+                  "PaymentprocessingService"
+                ],
+                "supplierManagement": [
+                  "SuppliermanagementService"
+                ]
+              },
+              "dependents": {
+                "customerManagement": [
+                  "CustomermanagementService"
+                ],
+                "orderManagement": [
+                  "OrdermanagementService"
+                ],
+                "supplierManagement": [
+                  "SuppliermanagementService"
+                ],
+                "paymentProcessing": [
+                  "PaymentprocessingService"
+                ]
+              }
+            }
+          }
+        },
+        "supplierManagement": {
+          "services": {
+            "SuppliermanagementService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "suppliers": {
+                  "fields": [
+                    "contact_email",
+                    "supplier_name"
+                  ]
+                }
+              },
+              "dependencies": {
+                "customerManagement": [
+                  "CustomermanagementService"
+                ],
+                "orderManagement": [
+                  "OrdermanagementService"
+                ],
+                "paymentProcessing": [
+                  "PaymentprocessingService"
+                ],
+                "productCatalog": [
+                  "ProductcatalogService"
+                ]
+              },
+              "dependents": {
+                "customerManagement": [
+                  "CustomermanagementService"
+                ],
+                "orderManagement": [
+                  "OrdermanagementService"
+                ],
+                "productCatalog": [
+                  "ProductcatalogService"
+                ],
+                "paymentProcessing": [
+                  "PaymentprocessingService"
+                ]
+              }
+            }
+          }
+        },
+        "paymentProcessing": {
+          "services": {
+            "PaymentprocessingService": {
+              "request_ids": [
+                "request_001"
+              ],
+              "tables": {
+                "payments": {
+                  "fields": [
+                    "amount",
+                    "order_id",
+                    "payment_date",
+                    "payment_id",
+                    "payment_method",
+                    "payment_status"
+                  ]
+                }
+              },
+              "dependencies": {
+                "customerManagement": [
+                  "CustomermanagementService"
+                ],
+                "orderManagement": [
+                  "OrdermanagementService"
+                ],
+                "productCatalog": [
+                  "ProductcatalogService"
+                ],
+                "supplierManagement": [
+                  "SuppliermanagementService"
+                ]
+              },
+              "dependents": {
+                "customerManagement": [
+                  "CustomermanagementService"
+                ],
+                "orderManagement": [
+                  "OrdermanagementService"
+                ],
+                "productCatalog": [
+                  "ProductcatalogService"
+                ],
+                "supplierManagement": [
+                  "SuppliermanagementService"
+                ]
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

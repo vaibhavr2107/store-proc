@@ -15,6 +15,11 @@ logger = logging.getLogger(__name__)
 TABLE_PATTERN = re.compile(r"\bfrom\s+([a-zA-Z0-9_.\[\]\"`]+)(?:\s+(?:as\s+)?([a-zA-Z0-9_]+))?", re.IGNORECASE)
 JOIN_PATTERN = re.compile(r"\bjoin\s+([a-zA-Z0-9_.\[\]\"`]+)(?:\s+(?:as\s+)?([a-zA-Z0-9_]+))?", re.IGNORECASE)
 SELECT_PATTERN = re.compile(r"select\s+(.*?)\s+from", re.IGNORECASE | re.DOTALL)
+SELECT_BLOCK_PATTERN = re.compile(
+    r"select\s+(?P<columns>.*?)\s+from\s+(?P<base>[a-zA-Z0-9_.\[\]\"`]+)"
+    r"(?:\s+(?:as\s+)?(?P<alias>[a-zA-Z0-9_]+))?(?P<rest>.*?)(?=;|\bselect\b|\binsert\b|\bupdate\b|\bdelete\b|\bend\b|$)",
+    re.IGNORECASE | re.DOTALL,
+)
 PROCEDURE_PATTERN = re.compile(r"create\s+procedure\s+([a-zA-Z0-9_\.]+)", re.IGNORECASE)
 INSERT_PATTERN = re.compile(
     r"insert\s+into\s+([a-zA-Z0-9_.\[\]\"`]+)\s*\(([^)]+)\)",
@@ -55,6 +60,8 @@ def parse_store_procedure(source: str) -> Dict[str, Any]:
         alias_map.update(extracted_aliases)
     crud_details = _extract_crud_details(source, tables, alias_map)
     fields_map = crud_details["table_fields"]
+    field_detail_map = crud_details["table_field_details"]
+    table_dependencies, select_flows, procedure_steps = _analyze_procedure_flow(source, alias_map)
     procedure_name = _extract_procedure_name(source)
     logger.debug("Parsed tables: %s", tables)
     logger.debug("Alias map: %s", alias_map)
@@ -67,7 +74,11 @@ def parse_store_procedure(source: str) -> Dict[str, Any]:
         "procedure_name": procedure_name,
         "table_operations": crud_details["table_operations"],
         "table_operation_columns": crud_details["table_operation_columns"],
-    }
+        "table_field_details": field_detail_map,
+        "table_dependencies": table_dependencies,
+        "select_flows": select_flows,
+        "procedure_steps": procedure_steps,
+   }
 
 
 def _extract_tables_and_aliases(pattern: re.Pattern[str], source: str) -> Tuple[Set[str], Dict[str, str]]:
@@ -169,15 +180,11 @@ def _extract_crud_details(
             as_index = lower_expr.find(" as ")
             if as_index != -1:
                 column_expr = column_expr[:as_index].strip()
-            if "." in column_expr:
-                alias, column = column_expr.split(".", 1)
-                alias = alias.strip().lower()
-                column = column.strip()
-                table = alias_map.get(alias, normalize_identifier(alias))
-                operations[table]["read"].add(column or "*")
+            for alias, column in re.findall(r"([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)", column_expr):
+                alias_lower = alias.lower()
+                table = alias_map.get(alias_lower, normalize_identifier(alias_lower))
+                operations[table]["read"].add(column)
                 tables.add(table)
-            else:
-                continue
 
     for match in INSERT_PATTERN.finditer(source):
         table_ref = match.group(1)
@@ -214,18 +221,181 @@ def _extract_crud_details(
         for table, op_map in operations.items()
     }
     table_fields = {}
+    table_field_details = {}
     for table in tables:
         column_sets = []
         for op in ("read", "create", "update"):
             column_sets.append(set(table_operation_columns.get(table, {}).get(op, [])))
         columns = sorted(set().union(*column_sets)) if column_sets else []
         table_fields[table] = columns
+        table_field_details[table] = [{"name": column, "type": "string"} for column in columns]
     return {
         "table_operations": table_operations,
         "table_operation_columns": table_operation_columns,
         "table_fields": table_fields,
+        "table_field_details": table_field_details,
     }
 
+
+def _split_statements_with_comments(source: str) -> List[Dict[str, Any]]:
+    statements: List[Dict[str, Any]] = []
+    pending_comments: List[str] = []
+    buffer = ""
+    for line in source.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith("--"):
+            pending_comments.append(stripped[2:].strip())
+            continue
+        buffer += line + "\n"
+        while ";" in buffer:
+            stmt, buffer = buffer.split(";", 1)
+            text = stmt.strip()
+            if not text:
+                continue
+            keyword = text.split(None, 1)[0].lower()
+            statements.append({"type": keyword, "text": text, "comments": pending_comments})
+            pending_comments = []
+    if buffer.strip():
+        keyword = buffer.strip().split(None, 1)[0].lower()
+        statements.append({"type": keyword, "text": buffer.strip(), "comments": pending_comments})
+    return statements
+
+
+def _analyze_procedure_flow(
+    source: str,
+    alias_map: Dict[str, str],
+) -> Tuple[Dict[str, List[str]], List[List[str]], List[Dict[str, Any]]]:
+    statements = _split_statements_with_comments(source)
+    table_dependencies: Dict[str, List[str]] = defaultdict(list)
+    flow_paths: List[List[str]] = []
+    flow_steps: List[Dict[str, Any]] = []
+
+    for statement in statements:
+        stmt_type = statement.get("type", "").lower()
+        text = statement.get("text", "")
+        comments = statement.get("comments", [])
+
+        if stmt_type == "select":
+            match = SELECT_BLOCK_PATTERN.search(text)
+            if not match:
+                continue
+            columns = match.group("columns") or ""
+            base_raw = match.group("base") or ""
+            base_alias_raw = match.group("alias") or ""
+            rest = match.group("rest") or ""
+
+            base_table = normalize_identifier(base_raw)
+            base_alias = base_alias_raw.lower() if base_alias_raw else base_table
+            base_table = alias_map.get(base_alias, base_table)
+            if not base_table:
+                continue
+
+            joined_tables: List[str] = []
+            for join_match in JOIN_PATTERN.finditer(rest):
+                join_table = normalize_identifier(join_match.group(1))
+                if join_table and join_table != base_table and join_table not in joined_tables:
+                    joined_tables.append(join_table)
+                    if join_table not in table_dependencies[base_table]:
+                        table_dependencies[base_table].append(join_table)
+
+            column_usage: Dict[str, Set[str]] = defaultdict(set)
+            for alias, column in re.findall(r"([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)", columns):
+                alias_lower = alias.lower()
+                table = alias_map.get(alias_lower, normalize_identifier(alias_lower))
+                column_usage[table].add(column)
+                if table != base_table and table not in table_dependencies[base_table]:
+                    table_dependencies[base_table].append(table)
+                if table != base_table and table not in joined_tables:
+                    joined_tables.append(table)
+
+            if joined_tables:
+                flow_paths.append([base_table] + joined_tables)
+
+            description_lines: List[str] = []
+            if comments:
+                description_lines.extend(comments)
+
+            base_columns = sorted(column_usage.get(base_table, []))
+            if base_columns:
+                description_lines.append(
+                    f"Select from {base_table} retrieving {', '.join(base_columns)}."
+                )
+            else:
+                description_lines.append(f"Select from {base_table}.")
+
+            for table, cols in column_usage.items():
+                if table == base_table:
+                    continue
+                description_lines.append(
+                    f"Join to {table} to access {', '.join(sorted(cols))}."
+                )
+
+            where_match = re.search(r"\bwhere\b(.*)", rest, re.IGNORECASE | re.DOTALL)
+            if where_match:
+                clause = where_match.group(1)
+                clause = re.split(r"\border\s+by\b|\bgroup\s+by\b|\bhaving\b", clause, flags=re.IGNORECASE)[0]
+                clause = clause.strip()
+                if clause:
+                    description_lines.append(f"Filters: {clause}.")
+
+            flow_steps.append(
+                {
+                    "type": "SELECT",
+                    "base_table": base_table,
+                    "tables": [base_table] + joined_tables,
+                    "description": description_lines,
+                }
+            )
+        elif stmt_type == "update":
+            tokens = text.split()
+            table = normalize_identifier(tokens[1]) if len(tokens) > 1 else "unknown"
+            description_lines = []
+            if comments:
+                description_lines.extend(comments)
+            description_lines.append(f"Update {table} with statement: {text.strip()}.")
+            flow_steps.append(
+                {
+                    "type": "UPDATE",
+                    "base_table": table,
+                    "tables": [table],
+                    "description": description_lines,
+                }
+            )
+        elif stmt_type == "insert":
+            match = re.search(r"into\s+([a-zA-Z0-9_.\[\]\"`]+)", text, re.IGNORECASE)
+            table = normalize_identifier(match.group(1)) if match else "unknown"
+            description_lines = []
+            if comments:
+                description_lines.extend(comments)
+            description_lines.append(f"Insert into {table}: {text.strip()}.")
+            flow_steps.append(
+                {
+                    "type": "INSERT",
+                    "base_table": table,
+                    "tables": [table],
+                    "description": description_lines,
+                }
+            )
+        elif stmt_type == "delete":
+            match = re.search(r"from\s+([a-zA-Z0-9_.\[\]\"`]+)", text, re.IGNORECASE)
+            table = normalize_identifier(match.group(1)) if match else "unknown"
+            description_lines = []
+            if comments:
+                description_lines.extend(comments)
+            description_lines.append(f"Delete from {table}: {text.strip()}.")
+            flow_steps.append(
+                {
+                    "type": "DELETE",
+                    "base_table": table,
+                    "tables": [table],
+                    "description": description_lines,
+                }
+            )
+
+    filtered_dependencies = {table: refs for table, refs in table_dependencies.items() if refs}
+    return filtered_dependencies, flow_paths, flow_steps
 
 def _split_by_comma_outside_parentheses(clause: str) -> List[str]:
     parts = []
@@ -268,9 +438,13 @@ def map_domains(parsed: Dict[str, List[str]], domain_mapping: Dict[str, List[str
         "raw": parsed.get("raw", ""),
         "alias_map": parsed.get("alias_map", {}),
         "table_fields": parsed.get("table_fields", {}),
+        "table_field_details": parsed.get("table_field_details", {}),
         "procedure_name": parsed.get("procedure_name", "procedure"),
         "table_operations": parsed.get("table_operations", {}),
         "table_operation_columns": parsed.get("table_operation_columns", {}),
+        "table_dependencies": parsed.get("table_dependencies", {}),
+        "select_flows": parsed.get("select_flows", []),
+        "procedure_steps": parsed.get("procedure_steps", []),
     }
 
 

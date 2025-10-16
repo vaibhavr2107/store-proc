@@ -1,5 +1,7 @@
 {
-    "order": ["orders", "delivery", "invoices"],
-    "user": ["customers"],
-    "payment": ["payments", "payment_methods"]
+  "customerManagement": ["customers", "audit_logs", "customer"],
+  "orderManagement": ["orders", "order_items"],
+  "productCatalog": ["products", "inventory"],
+  "supplierManagement": ["suppliers"],
+  "paymentProcessing": ["payments"]
 }
