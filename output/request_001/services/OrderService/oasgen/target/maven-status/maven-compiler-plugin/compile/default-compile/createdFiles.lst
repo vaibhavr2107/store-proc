@@ -1,6 +1,0 @@
-com\barclays\uscb\orderservice\model\InvoicesRecord.class
-com\barclays\uscb\orderservice\model\OrdersRecord.class
-com\barclays\uscb\orderservice\api\OrderApi.class
-com\barclays\uscb\orderservice\model\OrderHealthResponse.class
-com\barclays\uscb\orderservice\invoker\ApiClient.class
-com\barclays\uscb\orderservice\model\DeliveryRecord.class

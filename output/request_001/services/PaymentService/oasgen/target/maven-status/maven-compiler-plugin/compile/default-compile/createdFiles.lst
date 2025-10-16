@@ -1,5 +1,0 @@
-com\barclays\uscb\paymentservice\model\PaymentHealthResponse.class
-com\barclays\uscb\paymentservice\api\PaymentApi.class
-com\barclays\uscb\paymentservice\model\PaymentMethodsRecord.class
-com\barclays\uscb\paymentservice\model\PaymentsRecord.class
-com\barclays\uscb\paymentservice\invoker\ApiClient.class

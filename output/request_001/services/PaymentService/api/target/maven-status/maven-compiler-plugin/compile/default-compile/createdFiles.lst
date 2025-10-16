@@ -1,8 +1,0 @@
-com\barclays\uscb\paymentservice\mapper\PaymentMapper.class
-com\barclays\uscb\paymentservice\Application.class
-com\barclays\uscb\paymentservice\service\impl\PaymentServiceImpl.class
-com\barclays\uscb\paymentservice\controller\PaymentController.class
-com\barclays\uscb\paymentservice\exception\GlobalExceptionHandler.class
-com\barclays\uscb\paymentservice\repository\PaymentRepository.class
-com\barclays\uscb\paymentservice\entity\PaymentEntity.class
-com\barclays\uscb\paymentservice\service\PaymentService.class
