@@ -1,8 +1,0 @@
-com\barclays\uscb\ordermanagementservice\entity\OrdermanagementEntity.class
-com\barclays\uscb\ordermanagementservice\service\OrdermanagementService.class
-com\barclays\uscb\ordermanagementservice\repository\OrdermanagementRepository.class
-com\barclays\uscb\ordermanagementservice\service\impl\OrdermanagementServiceImpl.class
-com\barclays\uscb\ordermanagementservice\Application.class
-com\barclays\uscb\ordermanagementservice\mapper\OrdermanagementMapper.class
-com\barclays\uscb\ordermanagementservice\exception\GlobalExceptionHandler.class
-com\barclays\uscb\ordermanagementservice\controller\OrdermanagementController.class

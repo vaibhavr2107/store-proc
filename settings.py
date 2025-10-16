@@ -4,7 +4,7 @@ PROJECT_SETTINGS = {
     "llm": {
         "provider": "custom",
         "base_url": "https://openrouter.ai/api/v1",
-        "api_key": "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",
+        "api_key": "some-token",
         "model": "deepseek/deepseek-chat-v3.1:free",
         "timeout": 30.0,
         "headers": {
@@ -31,5 +31,5 @@ PROJECT_SETTINGS = {
     "graphdb_file": "graphdb.json",
     "maven_executable": "C:\\Program Files\\Apache\\apache-maven-3.9.11\\bin\\mvn.cmd",
     "service_base_package_pattern": "com.barclays.uscb.{service}",
-    "java_home": r"C:\Program Files\Java\jdk-21",
+    "java_home": "C:\Program Files\Java\jdk-21",
 }

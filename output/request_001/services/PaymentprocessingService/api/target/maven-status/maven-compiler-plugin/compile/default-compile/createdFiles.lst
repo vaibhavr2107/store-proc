@@ -1,8 +1,0 @@
-com\barclays\uscb\paymentprocessingservice\service\impl\PaymentprocessingServiceImpl.class
-com\barclays\uscb\paymentprocessingservice\controller\PaymentprocessingController.class
-com\barclays\uscb\paymentprocessingservice\repository\PaymentprocessingRepository.class
-com\barclays\uscb\paymentprocessingservice\mapper\PaymentprocessingMapper.class
-com\barclays\uscb\paymentprocessingservice\entity\PaymentprocessingEntity.class
-com\barclays\uscb\paymentprocessingservice\service\PaymentprocessingService.class
-com\barclays\uscb\paymentprocessingservice\exception\GlobalExceptionHandler.class
-com\barclays\uscb\paymentprocessingservice\Application.class

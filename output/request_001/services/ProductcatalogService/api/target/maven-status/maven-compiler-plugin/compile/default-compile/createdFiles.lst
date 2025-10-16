@@ -1,8 +1,0 @@
-com\barclays\uscb\productcatalogservice\entity\ProductcatalogEntity.class
-com\barclays\uscb\productcatalogservice\service\impl\ProductcatalogServiceImpl.class
-com\barclays\uscb\productcatalogservice\Application.class
-com\barclays\uscb\productcatalogservice\exception\GlobalExceptionHandler.class
-com\barclays\uscb\productcatalogservice\mapper\ProductcatalogMapper.class
-com\barclays\uscb\productcatalogservice\controller\ProductcatalogController.class
-com\barclays\uscb\productcatalogservice\repository\ProductcatalogRepository.class
-com\barclays\uscb\productcatalogservice\service\ProductcatalogService.class
